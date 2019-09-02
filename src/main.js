@@ -43,6 +43,19 @@ axios.interceptors.request.use(function (config) {
   config.headers['Authorization']=AUTH_TOKEN;
   return config;
 });
+axios.interceptors.response.use(
+  response => {
+      return response;
+  },
+  error => {
+      if (error.response) {
+          switch (error.response.status) {
+              case 401:
+                global.routeToLogin()
+          }
+      }
+      return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+  });
 Vue.prototype.$axios = axios;
 
 // Init Vue App

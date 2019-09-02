@@ -9,14 +9,23 @@ import Chat from './assets/vue/pages/chat.vue';
 import Vuex from './assets/vue/pages/vuex.vue';
 
 import Index from './assets/vue/pages/index'
-import Person from './assets/vue/pages/person'
+import register from './assets/vue/pages/register'
 import Manage from './assets/vue/pages/manage'
 import MyHome from './assets/vue/pages/myHome'
+import Login from './assets/vue/pages/login'
 
 export default [
   {
     path: '/',
     component: Index,
+  },
+  {
+    path: '/login/',
+    component: Login,
+  },
+  {
+    path: '/register/',
+    component: register,
   },
   {
     path: '/myHome/',

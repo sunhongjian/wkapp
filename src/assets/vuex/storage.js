@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    hasLoginSuccess: false,
     user: {}
   },
 
@@ -15,6 +16,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    LOGIN_SUCCESS(state, val) {
+      state.hasLoginSuccess = val
+    },
     USER_LOGGED (state, user) {
       state.user = user;
     }

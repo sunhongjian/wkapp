@@ -17,5 +17,9 @@ export default new Vue({
       });
       self.toastCenter.open();
     },
+    routeToLogin() {
+      this.toast("请先登录");
+      this.$f7.loginScreen.open("#login-screen");
+    }
   }
 })

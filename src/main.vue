@@ -1,43 +1,18 @@
 <template>
   <!-- App -->
   <f7-app :params="f7params">
-    <f7-view id="main-view" main>
-      <f7-page>
-        <f7-tabs animated>
-          <f7-tab id="manage">
-            <manage></manage>
-          </f7-tab>
-          <f7-tab id="person">
-            <person></person>
-          </f7-tab>
-        </f7-tabs>
-        <f7-toolbar bottom tabbar labels>
-          <f7-link
-            tab-link="#manage"
-            tab-link-active
-            text="管理"
-            icon-ios="f7:email_fill"
-            icon-aurora="f7:email_fill"
-            icon-md="material:email"
-          ></f7-link>
-          <f7-link
-            tab-link="#person"
-            text="我的"
-            icon-ios="f7:today_fill"
-            icon-aurora="f7:today_fill"
-            icon-md="material:today"
-          ></f7-link>
-        </f7-toolbar>
-      </f7-page>
+    <f7-statusbar></f7-statusbar>
+    <f7-view id="main-view" main url="/">
+      
     </f7-view>
+        <!-- Login Screen -->
+    <login-page></login-page>
   </f7-app>
 </template>
 <script>
 // Import Routes...
-import { f7App, f7Panel, f7View, f7Statusbar, f7Pages } from "framework7-vue";
 import routes from "./routes.js";
-import Person from "./assets/vue/pages/person";
-import Manage from "./assets/vue/pages/manage";
+import loginPage from './assets/vue/pages/login'
 
 let theme = "auto";
 if (document.location.search.indexOf("theme=") >= 0) {
@@ -46,8 +21,7 @@ if (document.location.search.indexOf("theme=") >= 0) {
 
 export default {
   components: {
-    Person,
-    Manage
+    loginPage
   },
   mounted() {
     let self = this;
