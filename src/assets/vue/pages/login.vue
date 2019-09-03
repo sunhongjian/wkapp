@@ -85,14 +85,12 @@ export default {
             password: passwordRsa
           }
         });
-        console.log(res.data);
         if (res.data.code == 200) {
           this.$f7.loginScreen.close();
           this.LOGIN_SUCCESS(true);
           // this.$f7router.navigate("/myHome/");
           window.localStorage.setItem("appUserId", res.data.data.appUserId);
           window.localStorage.setItem("token", res.data.data.token);
-        } else {
         }
         global.toast(res.data.info);
       } catch (e) {

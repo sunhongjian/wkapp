@@ -2,31 +2,54 @@
   <div class="bg-white">
     <div class="head-top">
       <div class="title">住宅管理</div>
+      <i @click="add" class="f7-icons">add</i>
     </div>
-    <f7-toolbar tabbar style="background: #fff">
-      <f7-link tab-link="#tab-1" tab-link-active>主控</f7-link>
-      <f7-link tab-link="#tab-2">从控</f7-link>
-    </f7-toolbar>
-    <f7-tabs>
-      <f7-tab id="tab-1" class="page-content" tab-active>
+    <div class="list-wrapper">
+      <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="handleSub(item)">
+        <div class="left-content">
+          <div class="title">{{item.houseName}}</div>
+          <div class="sub-title">{{item.address}}</div>
+          <div class="flex" style="margin-top: 8px" v-if="item.flag == 0">
+            <div class="home"></div>
+            <div style="margin-left: 8px; color: teal">主</div>
+          </div>
+        </div>
+        <div class="right-content">
+          <i class="f7-icons">chevron_right</i>
+        </div>
+      </div>
+    </div>
+    <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
+      <f7-page login-screen color-theme="teal">
+        <f7-navbar>
+          <f7-nav-left>
+            <f7-link popup-close>返回</f7-link>
+          </f7-nav-left>
+          <f7-nav-title>从控列表</f7-nav-title>
+          <f7-nav-right>
+            <f7-link @click="addSub">添加</f7-link>
+          </f7-nav-right>
+        </f7-navbar>
         <div class="list-wrapper">
-          <div v-for="item in list" :key="item.houseMgtId" class="list-item">
+          <div v-for="item in sublist" :key="item.houseMgtId" class="list-item">
             <div class="left-content">
-              <div class="title">{{item.houseName}}</div>
-              <div class="sub-title">{{item.address}}</div>
+              <div>
+                <div class="title">
+                  <span>{{item.remark}}</span>
+                  <span>
+                    <i style="color: teal" @click="changeName(item)" class="f7-icons">edit</i>
+                  </span>
+                </div>
+              </div>
+              <div class="sub-title">{{item.phoneNo}}</div>
             </div>
             <div class="right-content">
-              <i class="f7-icons">chevron_right</i>
+              <i style="color: teal" @click="trashSub" class="f7-icons">trash</i>
             </div>
           </div>
         </div>
-      </f7-tab>
-      <f7-tab id="tab-2" class="page-content">
-        <f7-block>
-          <p>Tab 2 content</p>...
-        </f7-block>
-      </f7-tab>
-    </f7-tabs>
+      </f7-page>
+    </f7-popup>
   </div>
 </template>
 
@@ -38,7 +61,10 @@ export default {
   created() {},
   data() {
     return {
-      list: []
+      popupOpened: false,
+      list: [],
+      subData: {},
+      sublist: []
     };
   },
   computed: {
@@ -47,19 +73,19 @@ export default {
     })
   },
   mounted() {
-    window.x = this
+    window.x = this;
     this.initData();
   },
   watch: {
-    hasLoginSuccess(val,old) {
-      if(val == true && old == false) {
+    hasLoginSuccess(val, old) {
+      if (val == true && old == false) {
         this.initData();
         this.LOGIN_SUCCESS(false);
       }
     }
   },
   methods: {
-    ...mapMutations(['LOGIN_SUCCESS']),
+    ...mapMutations(["LOGIN_SUCCESS"]),
     async initData() {
       let appUserId = window.localStorage.getItem("appUserId");
       let res = await this.$axios({
@@ -69,6 +95,50 @@ export default {
       if (res.data.code == 200) {
         this.list = res.data.data;
       }
+    },
+    async handleSub(item) {
+      this.subData = item
+      this.popupOpened = true;
+      let appUserId = window.localStorage.getItem("appUserId");
+      let res = await this.$axios({
+        url: `app/heating/residentApp/getSlaveControl/${item.houseMgtId}`,
+        method: "get"
+      });
+      if (res.data.code == 200) {
+        this.sublist = res.data.data;
+      }
+    },
+    changeName(item) {
+      this.$f7.dialog.prompt("请输入新名称", async code => {
+        let res = await this.$axios({
+          url: "app/heating/residentApp/modifySlaveControlName",
+          method: "post",
+          data: {
+            controlId: item.controlId,
+            remark: code
+          }
+        });
+        global.toast(res.data.info);
+        this.handleSub(item);
+      });
+    },
+    addSub() {
+      this.$f7.dialog.prompt("请输入从控手机号", async code => {
+        let res = await this.$axios({
+          url: "app/heating/residentApp/addSlaveControl",
+          method: "post",
+          data: {
+            houseName: this.subData.houseName,
+            houseMgtId: this.subData.houseMgtId,
+            phoneNo: code
+          }
+        });
+        global.toast(res.data.info);
+        this.handleSub(item);
+      });
+    },
+    trashSub() {
+      this.$f7.dialog.confirm("确定删除该从控吗?", () => {});
     },
     add() {
       this.$f7.dialog.prompt("请输入住宅码", async code => {
@@ -81,11 +151,8 @@ export default {
               appUserId: window.localStorage.getItem("appUserId")
             }
           });
-        } catch (error) {
-          if (error.response.status == "401") {
-          }
-        }
-        global.toast(res.data.info);
+          global.toast(res.data.info);
+        } catch (error) {}
       });
     }
   }
@@ -93,11 +160,18 @@ export default {
 </script>
 
 <style scoped>
+.flex {
+  display: flex;
+}
 .bg-white {
   background: #fff;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 }
 .head-top {
-  height: 150px;
+  position: relative;
+  height: 160px;
   background-image: url("../../images/headtop.png");
   background-size: 100% 100%;
 }
@@ -107,8 +181,18 @@ export default {
   padding-top: 60px;
   color: teal;
 }
+.head-top .f7-icons {
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  color: teal;
+  background: #fff;
+  border-radius: 50%;
+}
 .list-wrapper {
   padding: 20px;
+  overflow: auto;
+  flex: 1;
 }
 .list-wrapper .list-item .title {
   color: teal;
@@ -118,11 +202,17 @@ export default {
   color: teal;
   opacity: 0.6;
 }
+.list-wrapper .list-item .home {
+  width: 20px;
+  height: 20px;
+  background-image: url("../../images/home.jpeg");
+  background-size: 100% 100%;
+}
 .list-wrapper .list-item {
   position: relative;
   margin: 10px 0;
   border-radius: 10px;
-  box-shadow: #ebebeb 2px 2px 3px 1px;
+  box-shadow: #f6f6f6 2px 2px 3px 1px;
   padding: 10px;
   display: flex;
 }
