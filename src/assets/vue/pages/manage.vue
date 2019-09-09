@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-white">
+  <f7-page class="bg-white">
     <div class="head-top">
       <div class="title">住宅管理</div>
       <i @click="add" class="f7-icons">add</i>
     </div>
     <div class="list-wrapper">
-      <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="handleSub(item)">
+      <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="goDetail()">
         <div class="left-content">
           <div class="title">{{item.houseName}}</div>
           <div class="sub-title">{{item.address}}</div>
@@ -14,16 +14,16 @@
             <div style="margin-left: 8px; color: teal">主</div>
           </div>
         </div>
-        <div class="right-content">
-          <i class="f7-icons">chevron_right</i>
+        <div class="right-content" @click.stop="handleSub(item)">
+          <i class="f7-icons">settings</i>
         </div>
       </div>
     </div>
-    <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
+    <f7-popup class="demo-popup" :opened="popupOpenedCk" @popup:closed="popupOpenedCk = false">
       <f7-page login-screen color-theme="teal">
         <f7-navbar>
           <f7-nav-left>
-            <f7-link popup-close>返回</f7-link>
+            <f7-link @click="popupOpenedCk= false">返回</f7-link>
           </f7-nav-left>
           <f7-nav-title>从控列表</f7-nav-title>
           <f7-nav-right>
@@ -36,21 +36,26 @@
               <div>
                 <div class="title">
                   <span>{{item.remark}}</span>
-                  <span>
-                    <i style="color: teal" @click="changeName(item)" class="f7-icons">edit</i>
-                  </span>
                 </div>
               </div>
               <div class="sub-title">{{item.phoneNo}}</div>
             </div>
             <div class="right-content">
-              <i style="color: teal" @click="trashSub" class="f7-icons">trash</i>
+              <i style="color: teal" @click="$refs.actionsOneGroup.open(); temp=item" class="f7-icons">edit</i>
             </div>
           </div>
         </div>
       </f7-page>
     </f7-popup>
-  </div>
+    <f7-actions ref="actionsOneGroup">
+      <f7-actions-group>
+        <f7-actions-label></f7-actions-label>
+        <f7-actions-button @click="changeName()">更改名称</f7-actions-button>
+        <f7-actions-button>移交主控</f7-actions-button>
+        <f7-actions-button @click="trashSub()" color="red">删除</f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
+  </f7-page>
 </template>
 
 <script>
@@ -61,10 +66,11 @@ export default {
   created() {},
   data() {
     return {
-      popupOpened: false,
+      popupOpenedCk: false,
       list: [],
       subData: {},
-      sublist: []
+      sublist: [],
+      temp: {}
     };
   },
   computed: {
@@ -77,12 +83,12 @@ export default {
     this.initData();
   },
   watch: {
-    hasLoginSuccess(val, old) {
-      if (val == true && old == false) {
-        this.initData();
-        this.LOGIN_SUCCESS(false);
-      }
-    }
+    // hasLoginSuccess(val, old) {
+    //   if (val == true && old == false) {
+    //     this.initData();
+    //     this.LOGIN_SUCCESS(false);
+    //   }
+    // }
   },
   methods: {
     ...mapMutations(["LOGIN_SUCCESS"]),
@@ -96,9 +102,12 @@ export default {
         this.list = res.data.data;
       }
     },
+    goDetail() {
+      this.$emit("closeHandle");
+    },
     async handleSub(item) {
       this.subData = item
-      this.popupOpened = true;
+      this.popupOpenedCk = true;
       let appUserId = window.localStorage.getItem("appUserId");
       let res = await this.$axios({
         url: `app/heating/residentApp/getSlaveControl/${item.houseMgtId}`,
@@ -114,12 +123,12 @@ export default {
           url: "app/heating/residentApp/modifySlaveControlName",
           method: "post",
           data: {
-            controlId: item.controlId,
+            controlId: this.temp.controlId,
             remark: code
           }
         });
         global.toast(res.data.info);
-        this.handleSub(item);
+        this.handleSub(this.temp);
       });
     },
     addSub() {
@@ -138,7 +147,9 @@ export default {
       });
     },
     trashSub() {
-      this.$f7.dialog.confirm("确定删除该从控吗?", () => {});
+      this.$f7.dialog.confirm("确定删除该从控吗?", () => {
+
+      });
     },
     add() {
       this.$f7.dialog.prompt("请输入住宅码", async code => {

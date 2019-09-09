@@ -64,6 +64,7 @@
 <script>
 import global from "../../../global";
 import { JSEncrypt } from "jsencrypt";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -75,10 +76,14 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["LOGIN_SUCCESS"]),
     logout() {
       window.localStorage.clear("appUserId");
       window.localStorage.clear("token");
+      this.LOGIN_SUCCESS(false);
       this.$f7.loginScreen.open("#login-screen");
+      var mySwiper = document.querySelector('.swiper-container').swiper
+      mySwiper.destroy()
     },
     async changePassword() {
       let encrypt = new JSEncrypt();

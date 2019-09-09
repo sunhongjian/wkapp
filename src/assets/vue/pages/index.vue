@@ -2,7 +2,7 @@
   <f7-page color-theme="teal">
     <f7-tabs animated>
       <f7-tab tab-active id="manage" style="background: #fff;">
-        <manage></manage>
+        <house></house>
       </f7-tab>
       <f7-tab id="person">
         <person></person>
@@ -13,9 +13,7 @@
         tab-link="#manage"
         tab-link-active
         text="管理"
-        icon-ios="f7:email_fill"
-        icon-aurora="f7:email_fill"
-        icon-md="material:email"
+        icon-f7="home"
       ></f7-link>
       <f7-link tab-link="#person" text="设置" icon-f7="person"></f7-link>
     </f7-toolbar>
@@ -26,11 +24,13 @@
 import global from "../../../global";
 import Person from "./person";
 import Manage from "./manage";
+import House from "./house";
 import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     Person,
-    Manage
+    Manage,
+    House
   },
   computed: {
     ...mapState({

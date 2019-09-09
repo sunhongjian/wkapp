@@ -56,7 +56,7 @@ export default [
     component: Chat
   },
   {
-    path: '/vuex/',
-    component: Vuex
+    path: '/manage/',
+    component: Manage
   },
 ];
