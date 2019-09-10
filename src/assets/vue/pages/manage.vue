@@ -1,8 +1,9 @@
 <template>
   <f7-page class="bg-white">
     <div class="head-top">
+      <i class="f7-icons left-icon" @click="goDetail()">arrow_left</i>
       <div class="title">住宅管理</div>
-      <i @click="add" class="f7-icons">add</i>
+      <i @click="add" class="f7-icons add-icon">add</i>
     </div>
     <div class="list-wrapper">
       <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="goDetail()">
@@ -14,7 +15,7 @@
             <div style="margin-left: 8px; color: teal">主</div>
           </div>
         </div>
-        <div class="right-content" @click.stop="handleSub(item)">
+        <div class="right-content" v-if="item.flag == 0" @click.stop="handleSub(item)">
           <i class="f7-icons">settings</i>
         </div>
       </div>
@@ -186,13 +187,20 @@ export default {
   background-image: url("../../images/headtop.png");
   background-size: 100% 100%;
 }
+.left-icon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: teal;
+  font-size: 30px;
+}
 .head-top .title {
   font-size: 20px;
   padding: 20px;
   padding-top: 60px;
   color: teal;
 }
-.head-top .f7-icons {
+.head-top .add-icon {
   position: absolute;
   right: 20px;
   top: 60px;

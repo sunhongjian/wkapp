@@ -24,7 +24,7 @@
                   <div style="margin-top: 15px">
                     <div class="icon-home"></div>
                   </div>
-                  <div class="display-flex">
+                  <div class="display-flex" @click="$refs.actionsModeGroup.open()">
                       <div style="color: teal">{{modelType(child.modelType)}}</div>
                       <div class="icon-settings"></div>
                   </div>
@@ -63,6 +63,12 @@
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
       <manage ref="manage" @closeHandle="closeHandle"></manage>
     </f7-popup>
+    <f7-actions ref="actionsModeGroup">
+      <f7-actions-group>
+        <f7-actions-button>自由模式</f7-actions-button>
+        <f7-actions-button>编程模式</f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
   </div>
 </template>
 

@@ -13,6 +13,7 @@ import register from './assets/vue/pages/register'
 import Manage from './assets/vue/pages/manage'
 import MyHome from './assets/vue/pages/myHome'
 import Login from './assets/vue/pages/login'
+import Version from './assets/vue/pages/version'
 
 export default [
   {
@@ -34,6 +35,10 @@ export default [
   {
     path: '/about/',
     component: AboutPage
+  },
+  {
+    path: '/version/',
+    component: Version
   },
   {
     path: '/form/',

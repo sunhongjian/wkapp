@@ -1,5 +1,5 @@
 <template>
-  <f7-page color-theme="teal">
+  <f7-page color-theme="teal" class="no-padd">
     <f7-tabs animated>
       <f7-tab tab-active id="manage" style="background: #fff;">
         <house></house>

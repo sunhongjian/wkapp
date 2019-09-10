@@ -23,7 +23,7 @@ import FontAwesome from '@fortawesome/fontawesome-free/css/all.min.css';
 import FastClick from 'fastclick';
 
 // Import App Custom Styles
-// import AppStyles from './assets/sass/main.scss'
+import AppStyles from './assets/sass/main.scss'
 
 // Import App Component
 import app from './main.vue';

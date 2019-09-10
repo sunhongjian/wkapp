@@ -2,7 +2,7 @@
   <div>
     <f7-block-title>关于</f7-block-title>
     <f7-list>
-      <f7-list-item title="版本信息"></f7-list-item>
+      <f7-list-item title="版本信息" link="/version/"></f7-list-item>
       <f7-list-item title="检查更新"></f7-list-item>
       <f7-list-item title="意见反馈"></f7-list-item>
       <f7-list-item title="免责声明"></f7-list-item>
