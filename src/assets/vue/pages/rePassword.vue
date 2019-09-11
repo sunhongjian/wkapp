@@ -4,7 +4,7 @@
       <f7-nav-left>
         <f7-link popup-close>返回</f7-link>
       </f7-nav-left>
-      <f7-nav-title>注册</f7-nav-title>
+      <f7-nav-title>重置密码</f7-nav-title>
     </f7-navbar>
 
     <!-- <f7-block class="login-block-top" text-color="white" bg-color="lightblue">
@@ -35,7 +35,7 @@
 
       </f7-list-input>
       <f7-list-input
-        label="密码"
+        label="新密码"
         type="password"
         placeholder="请输入"
         clear-button
@@ -48,7 +48,7 @@
     <f7-block style="margin: 0 20px">
       <f7-row>
         <f7-col @click="sign">
-          <f7-button large fill round>注册</f7-button>
+          <f7-button large fill round>重置</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -100,7 +100,7 @@ export default {
       encrypt.setPublicKey(global.publicKey);
       let passwordRsa = encrypt.encrypt(this.password);
       let res = await this.$axios({
-        url: `/heating/residentApp/registration/regist`,
+        url: `/heating/residentApp/registration/forget`,
         method: "post",
         data: {
           phoneNo: this.phoneNo,

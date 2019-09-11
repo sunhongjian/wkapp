@@ -14,11 +14,11 @@ export default new Vue({
         text: msg,
         position: 'center',
         closeTimeout: 2500,
+        destroyOnClose: true
       });
       self.toastCenter.open();
     },
     routeToLogin() {
-      this.toast("请先登录");
       this.$f7.loginScreen.open("#login-screen");
     }
   }

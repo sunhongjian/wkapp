@@ -148,8 +148,15 @@ export default {
       });
     },
     trashSub() {
-      this.$f7.dialog.confirm("确定删除该从控吗?", () => {
-
+      this.$f7.dialog.confirm("确定删除该从控吗?", async () => {
+        try {
+          let res = await this.$axios({
+            url: `app/heating/residentApp/deleteSlaveControl/${this.temp.controlId}`,
+            method: "get",
+          });
+          global.toast(res.data.info);
+          this.initData();
+        } catch (error) {}
       });
     },
     add() {

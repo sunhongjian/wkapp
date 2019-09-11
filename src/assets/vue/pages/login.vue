@@ -42,8 +42,11 @@
       </f7-block>
       <f7-block style="text-align: center">
         <br />
-        <span>登录遇到问题?</span>
+        <span @click="popupOpenedRe = true">登录遇到问题?</span>
       </f7-block>
+      <f7-popup class="demo-popup" :opened="popupOpenedRe" @popup:closed="popupOpened = false">
+        <re-password @closeHandle="closeHandleRe"></re-password>
+      </f7-popup>
       <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
         <register @closeHandle="closeHandle"></register>
       </f7-popup>
@@ -55,14 +58,17 @@
 import global from "../../../global";
 import { JSEncrypt } from "jsencrypt";
 import register from "./register";
+import rePassword from "./rePassword";
 import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
-    register
+    register,
+    rePassword
   },
   data() {
     return {
+      popupOpenedRe: false,
       popupOpened: false,
       loginData: {
         phoneNo: "",
@@ -103,6 +109,9 @@ export default {
     },
     closeHandle() {
       this.popupOpened = false;
+    },
+    closeHandleRe() {
+      this.popupOpenedRe = false;
     }
   }
 };

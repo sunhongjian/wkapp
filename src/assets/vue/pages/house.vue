@@ -5,6 +5,9 @@
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         <!-- Slides -->
+        <div v-if="list.length == 0" class="add-block">
+          <i @click="add" style="color: teal" class="f7-icons">add</i>
+        </div>
         <div class="swiper-slide" v-for="item in list">
           <div class="bg-white">
             <div class="head-top">
@@ -24,13 +27,22 @@
                   <div style="margin-top: 15px">
                     <div class="icon-home"></div>
                   </div>
-                  <div class="display-flex" @click="$refs.actionsModeGroup.open()">
-                      <div style="color: teal">{{modelType(child.modelType)}}</div>
-                      <div class="icon-settings"></div>
+                  <div
+                    class="display-flex"
+                    @click="changeMode(child);"
+                  >
+                    <div style="color: teal">{{modelType(child.modelType)}}</div>
+                    <div class="icon-settings"></div>
                   </div>
-                  <div class="flex" style="width: 100%">
+                  <div class="flex" style="width: 100%" v-if="child.modelType == 0">
                     <div>
-                      <f7-button raised round small class="icon-round" @click="editTemp(child,'-1')">
+                      <f7-button
+                        raised
+                        round
+                        small
+                        class="icon-round"
+                        @click="editTemp(child,'-1')"
+                      >
                         <div class="icon-add"></div>
                       </f7-button>
                     </div>
@@ -47,7 +59,10 @@
                     </div>
                     <div>
                       <f7-button raised round small class="icon-round" @click="changeSwitch(child)">
-                        <div class="icon-switch" :class="{'icon-switch-open' : child.switchStatus == 'Y'}"></div>
+                        <div
+                          class="icon-switch"
+                          :class="{'icon-switch-open' : child.switchStatus == 'Y'}"
+                        ></div>
                       </f7-button>
                     </div>
                   </div>
@@ -63,12 +78,6 @@
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
       <manage ref="manage" @closeHandle="closeHandle"></manage>
     </f7-popup>
-    <f7-actions ref="actionsModeGroup">
-      <f7-actions-group>
-        <f7-actions-button>自由模式</f7-actions-button>
-        <f7-actions-button>编程模式</f7-actions-button>
-      </f7-actions-group>
-    </f7-actions>
   </div>
 </template>
 
@@ -113,6 +122,33 @@ export default {
     closeHandle() {
       this.popupOpened = false;
     },
+    add() {
+      this.$f7.dialog.prompt("请输入住宅码", async code => {
+        try {
+          let res = await this.$axios({
+            url: "app/heating/residentApp/addMasterControl",
+            method: "post",
+            data: {
+              houseCode: code,
+              appUserId: window.localStorage.getItem("appUserId")
+            }
+          });
+          this.initData();
+          global.toast(res.data.info);
+        } catch (error) {}
+      });
+    },
+    async changeMode(item) {
+      let res = await this.$axios({
+        url: `app/heating/residentApp/changeRoomModel/${
+          item.roomId
+        }`,
+        method: "get"
+      });
+      if (res.data.code == 200) {
+
+      }
+    },
     modelType(type) {
       if (type == 0) {
         return "自由模式";
@@ -123,21 +159,23 @@ export default {
     // 温度调控
     async editTemp(item, val) {
       let res = await this.$axios({
-        url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${item.setTemp+Number(val)}/${item.switchStatus}`,
+        url: `app/heating/residentApp/setTempSwitch/${
+          item.roomId
+        }/${item.setTemp + Number(val)}/${item.switchStatus}`,
         method: "get"
       });
       if (res.data.code == 200) {
-       item.setTemp = item.setTemp+Number(val)
+        item.setTemp = item.setTemp + Number(val);
       }
     },
     async changeSwitch(item) {
-      let status = item.switchStatus == 'Y' ? 'N' : 'Y'
-     let res = await this.$axios({
+      let status = item.switchStatus == "Y" ? "N" : "Y";
+      let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${item.setTemp}/${status}`,
         method: "get"
       });
       if (res.data.code == 200) {
-       item.switchStatus = item.switchStatus == 'Y' ? 'N' : 'Y'
+        item.switchStatus = item.switchStatus == "Y" ? "N" : "Y";
       }
     },
     async initData() {
@@ -149,6 +187,9 @@ export default {
       if (res.data.code == 200) {
         this.list = res.data.data;
         this.$nextTick(function() {
+          if(this.list.length == 0) {
+            return;
+          }
           var swiper = new Swiper(".swiper-container", {
             renderBullet: function(index, className) {
               return (
@@ -173,12 +214,24 @@ export default {
 }
 </style>
 <style scoped>
+.add-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-block  i {
+  font-size: 50px;
+  display: block;
+  border: 3px solid teal;
+  border-radius: 50%;
+}
 .display-flex {
- display: flex;
- text-align: center;
- margin: 10px 0;
- align-items: center;
- justify-content: center;
+  display: flex;
+  text-align: center;
+  margin: 10px 0;
+  align-items: center;
+  justify-content: center;
 }
 .icon-home {
   width: 27px;
@@ -195,10 +248,10 @@ export default {
   background-size: 32px auto;
   background-repeat: no-repeat;
   position: absolute;
-  left:2px;
+  left: 2px;
   top: 2px;
 }
-.icon-settings{
+.icon-settings {
   width: 24px;
   height: 24px;
   background-image: url("../../images/sy2.png");
@@ -213,8 +266,8 @@ export default {
   background-size: 32px auto;
   background-repeat: no-repeat;
   position: absolute;
-  left:2px;
-  top: 2px; 
+  left: 2px;
+  top: 2px;
 }
 .icon-switch-open {
   background-image: url("../../images/sy5.png");
@@ -226,7 +279,7 @@ export default {
   background-size: 32px auto;
   background-repeat: no-repeat;
   position: absolute;
-  left:2px;
+  left: 2px;
   top: 2px;
 }
 .bg-white {
