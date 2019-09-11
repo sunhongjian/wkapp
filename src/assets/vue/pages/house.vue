@@ -146,7 +146,7 @@ export default {
         method: "get"
       });
       if (res.data.code == 200) {
-
+        item.modelType = item.modelType == '0' ? '1' : '0'
       }
     },
     modelType(type) {
