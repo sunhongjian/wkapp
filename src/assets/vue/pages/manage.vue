@@ -138,13 +138,14 @@ export default {
           url: "app/heating/residentApp/addSlaveControl",
           method: "post",
           data: {
+            controlId: this.subData.controlId,
             houseName: this.subData.houseName,
             houseMgtId: this.subData.houseMgtId,
             phoneNo: code
           }
         });
         global.toast(res.data.info);
-        this.handleSub(item);
+        this.handleSub(this.subData);
       });
     },
     trashSub() {
@@ -155,7 +156,7 @@ export default {
             method: "get",
           });
           global.toast(res.data.info);
-          this.initData();
+          this.handleSub(this.subData);
         } catch (error) {}
       });
     },

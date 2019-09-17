@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <f7-page ptr @ptr:refresh="initData"
+           infinite :infinite-distance="50"
+           :infinite-preloader="loading">
     <!-- Slider main container -->
     <div class="swiper-container main-slide">
       <!-- Additional required wrapper -->
@@ -78,7 +80,7 @@
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
       <manage ref="manage" @closeHandle="closeHandle"></manage>
     </f7-popup>
-  </div>
+  </f7-page>
 </template>
 
 <script>
@@ -90,6 +92,7 @@ import manage from "./manage";
 export default {
   data() {
     return {
+      loading: false,
       list: [],
       popupOpened: false
     };
@@ -178,7 +181,7 @@ export default {
         item.switchStatus = item.switchStatus == "Y" ? "N" : "Y";
       }
     },
-    async initData() {
+    async initData(event,done) {
       let appUserId = window.localStorage.getItem("appUserId");
       let res = await this.$axios({
         url: `app/heating/residentApp/getHouseAndRoomList/${appUserId}`,
@@ -203,6 +206,10 @@ export default {
           });
           swiper.init();
         });
+      }
+      if (done) {
+        global.toast('刷新成功');
+        done();
       }
     }
   }
