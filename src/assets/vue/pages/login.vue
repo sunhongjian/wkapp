@@ -4,7 +4,7 @@
       <f7-block class="login-box">
         <div>
           <img src="../../images/icon.jpeg" alt />
-          <p>乾坤智电巧能量</p>
+          <p>成诺智家巧控</p>
         </div>
       </f7-block>
 
