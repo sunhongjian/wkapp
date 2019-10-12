@@ -14,6 +14,7 @@
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <div class="sub-title">{{item.houseControlInfo.address}}</div>
               <i @click="goDetail()" class="f7-icons">list</i>
+              <i @click="initData()" class="f7-icons f7-icons-refresh">refresh</i>
             </div>
             <div style="padding: 10px" class="group">
               <div class="item" v-for="child in item.houseRoomInfo">
@@ -152,16 +153,17 @@ import manage from "./manage";
 export default {
   data() {
     return {
+      firstInit: true, // 首次加载
       loading: false,
       list: [],
       popupOpened: false,
       popupRoom: false,
       modeDetailData: {}, // 温度详情
       condition: {
-        time: '',
-        starttime: '',
-        temp: '',
-        num: ''
+        time: "",
+        starttime: "",
+        temp: "",
+        num: ""
       } // 暂存温度
     };
   },
@@ -226,16 +228,18 @@ export default {
       });
     },
     editDetail(item) {
-      this.condition.starttime = this.modeDetailData['starttime'+item]
-      this.condition.time = this.modeDetailData['time'+item]
-      this.condition.temp = this.modeDetailData['temp'+item]
-      this.condition.num = item
+      this.condition.starttime = this.modeDetailData["starttime" + item];
+      this.condition.time = this.modeDetailData["time" + item];
+      this.condition.temp = this.modeDetailData["temp" + item];
+      this.condition.num = item;
     },
     // 修改子模式中自定义模式
     async saveTemp() {
-      this.modeDetailData['starttime'+this.condition.num] = this.condition.starttime
-      this.modeDetailData['time'+this.condition.num] = this.condition.time
-      this.modeDetailData['temp'+this.condition.num] = this.condition.temp
+      this.modeDetailData[
+        "starttime" + this.condition.num
+      ] = this.condition.starttime;
+      this.modeDetailData["time" + this.condition.num] = this.condition.time;
+      this.modeDetailData["temp" + this.condition.num] = this.condition.temp;
       let res = await this.$axios({
         url: "app/heating/residentApp/modifyModelDetails",
         method: "post",
@@ -378,18 +382,21 @@ export default {
           if (this.list.length == 0) {
             return;
           }
-          var swiper = new Swiper(".swiper-container", {
-            renderBullet: function(index, className) {
-              return (
-                '<span class="' + className + '">' + (index + 1) + "</span>"
-              );
-            },
-            pagination: {
-              el: ".swiper-pagination",
-              type: "bullets"
-            }
-          });
-          swiper.init();
+          if (this.firstInit) {
+            var swiper = new Swiper(".swiper-container", {
+              renderBullet: function(index, className) {
+                return (
+                  '<span class="' + className + '">' + (index + 1) + "</span>"
+                );
+              },
+              pagination: {
+                el: ".swiper-pagination",
+                type: "bullets"
+              }
+            });
+            swiper.init();
+            this.firstInit = false;
+          }
         });
       }
       if (done) {
@@ -533,5 +540,8 @@ export default {
   right: 20px;
   top: 60px;
   color: teal;
+}
+.head-top .f7-icons-refresh {
+  right: 60px !important;
 }
 </style>
