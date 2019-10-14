@@ -45,7 +45,11 @@ axios.interceptors.request.use(function (config) {
 });
 axios.interceptors.response.use(
   response => {
+    if(response.data.code == 'E') {
+      global.toast(response.data.info)
+    }else {
       return response;
+    }   
   },
   error => {
       if (error.response) {
