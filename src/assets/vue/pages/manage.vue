@@ -52,7 +52,7 @@
       <f7-actions-group>
         <f7-actions-label></f7-actions-label>
         <f7-actions-button @click="changeName()">更改名称</f7-actions-button>
-        <f7-actions-button>移交主控</f7-actions-button>
+        <f7-actions-button @click="move()">移交主控</f7-actions-button>
         <f7-actions-button @click="trashSub()" color="red">删除</f7-actions-button>
       </f7-actions-group>
     </f7-actions>
@@ -174,6 +174,25 @@ export default {
           global.toast(res.data.info);
         } catch (error) {}
       });
+    },
+    move() {
+      this.$f7.dialog.confirm('确认移交主控吗?', '提示', async () => {
+        console.log(this.temp)
+               try {
+          let res = await this.$axios({
+            url: "app/heating/residentApp/changeControl",
+            method: "post",
+            data: {
+              masterControlId: this.subData.controlId,
+              slaveControlId: this.temp.controlId
+            }
+          });
+          this.popupOpenedCk = false;
+          this.initData();
+          global.toast(res.data.info);    
+
+        } catch (error) {}
+      })
     }
   }
 };
