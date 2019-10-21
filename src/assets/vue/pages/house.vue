@@ -21,7 +21,8 @@
                 <div class="item-inner-content">
                   <div style="text-align: center">
                     <div>
-                      <span style="font-size: 18px; color:teal">{{child.remark}}/</span>
+                      <span style="font-size: 18px; color:teal"><span v-if="!child.showEditRemark" @click="editRemark(child,item.houseRoomInfo)">{{child.remark}}</span>
+                      <input style="width: 50px" v-model="child.remark" v-if="child.showEditRemark" autofocus @blur="blurRemark(child)">/</span>
                       <span style="font-size: 18px; color: #ffcc00">{{child.setTemp}}°</span>
                     </div>
                   </div>
@@ -195,6 +196,33 @@ export default {
     closeHandle() {
       this.popupOpened = false;
     },
+    editRemark(item, data) {
+      // 关闭其他的输入框
+      data.forEach(n => {
+        if(n.roomId == item.roomId) {
+
+        } else {
+          n.showEditRemark = false
+        }
+      })
+      item.showEditRemark = !item.showEditRemark
+      this.list = [...this.list]
+    },
+    // 失去焦点
+    async blurRemark(value) {
+      try {
+        let res = await this.$axios({
+          url: "app/heating/residentApp/modifyRoomName",
+          method: "post",
+          data: {
+            roomId: value.roomId,
+            remark: value.remark
+          }
+        });
+        this.initData();
+        global.toast(res.data.info);
+      } catch (error) {}
+    },
     // 进入温度详情
     async goModeDetail(item) {
       let res = await this.$axios({
@@ -362,6 +390,11 @@ export default {
       });
       if (res.data.code == 200) {
         this.list = res.data.data;
+        this.list.forEach(n=> {
+          n.houseRoomInfo.forEach(c => {
+            c.showEditRemark = false;
+          })
+        })
         // this.list.forEach(k => {
         //   k.houseRoomInfo.forEach(async n => {
         //     let res = await this.$axios({

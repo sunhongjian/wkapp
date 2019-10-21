@@ -8,7 +8,7 @@
     <div class="list-wrapper">
       <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="goDetail()">
         <div class="left-content">
-          <div class="title">{{item.houseName}}</div>
+          <div class="title">{{item.houseName}} <i @click.stop="editHouseName(item.controlId)" class="f7-icons">edit</i></div>
           <div class="sub-title">{{item.address}}</div>
           <div class="flex" style="margin-top: 8px" v-if="item.flag == 0">
             <div class="home"></div>
@@ -102,6 +102,20 @@ export default {
       if (res.data.code == 200) {
         this.list = res.data.data;
       }
+    },
+    editHouseName(id) {
+       this.$f7.dialog.prompt("请输入新名称", async code => {
+        let res = await this.$axios({
+          url: "app/heating/residentApp/modifyControlName",
+          method: "post",
+          data: {
+            controlId: id,
+            name: code
+          }
+        });
+        global.toast(res.data.info);
+        this.initData();
+      });     
     },
     goDetail() {
       this.$emit("closeHandle");
