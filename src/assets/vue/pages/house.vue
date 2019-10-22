@@ -19,17 +19,30 @@
             <div style="padding: 10px" class="group">
               <div class="item" v-for="child in item.houseRoomInfo">
                 <div class="item-inner-content">
-                  <div style="text-align: center">
+                  <div style="text-align: center; margin-bottom: 5px">
                     <div>
-                      <span style="font-size: 18px; color:teal"><span v-if="!child.showEditRemark" @click="editRemark(child,item.houseRoomInfo)">{{child.remark}}</span>
-                      <input style="width: 50px" v-model="child.remark" v-if="child.showEditRemark" autofocus @blur="blurRemark(child)">/</span>
+                      <span style="font-size: 18px; color:teal">
+                        <span
+                          v-if="!child.showEditRemark"
+                          @click="editRemark(child,item.houseRoomInfo)"
+                        >{{child.remark}}</span>
+                        <input
+                          style="width: 50px"
+                          v-model="child.remark"
+                          v-if="child.showEditRemark"
+                          autofocus
+                          @blur="blurRemark(child)"
+                        />
+                      </span>
+                      <span v-if="!child.appIcon" class="icon-home" @click="showIconChose(child)"></span>
+                      <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
+                        <img :src="getImgUrl(child.appIcon)" alt="">
+                      </span>
                       <span style="font-size: 18px; color: #ffcc00">{{child.setTemp}}°</span>
                     </div>
                   </div>
-                  <div style="margin-top: 15px">
-                    <div class="icon-home"></div>
-                  </div>
-                  <div class="display-flex">
+                  <div class="realTemp">{{child.realTemp}}</div>
+                  <div class="display-flex" style="margin-top: 5px">
                     <div style="color: teal" @click="changeMode(child);">{{modelType(child)}}</div>
                     <div
                       @click="goModeDetail(child)"
@@ -113,6 +126,46 @@
           </div>
         </div>
       </f7-page>
+      <!-- 选择图标 -->
+      <f7-actions
+        :grid="true"
+        :opened="actionGridOpened"
+        @actions:closed="actionGridOpened = false"
+      >
+        <f7-actions-group>
+          <f7-actions-button @click="changeIcon(1)">
+            <img slot="media" src="../../../assets/images/1.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(2)"> 
+            <img slot="media" src="../../../assets/images/2.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(3)"> 
+            <img slot="media" src="../../../assets/images/3.png" width="48" />
+          </f7-actions-button>
+        </f7-actions-group>
+        <f7-actions-group>
+          <f7-actions-button @click="changeIcon(4)"> 
+            <img slot="media" src="../../../assets/images/4.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(5)"> 
+            <img slot="media" src="../../../assets/images/5.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(6)"> 
+            <img slot="media" src="../../../assets/images/6.png" width="48" />
+          </f7-actions-button>
+        </f7-actions-group>
+        <f7-actions-group>
+          <f7-actions-button @click="changeIcon(7)"> 
+            <img slot="media" src="../../../assets/images/7.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(8)"> 
+            <img slot="media" src="../../../assets/images/8.png" width="48" />
+          </f7-actions-button>
+          <f7-actions-button @click="changeIcon(9)"> 
+            <img slot="media" src="../../../assets/images/9.png" width="48" />
+          </f7-actions-button>
+        </f7-actions-group>
+      </f7-actions>
       <f7-popover class="popover-menu" :opened="true">
         <f7-list inline-labels no-hairlines-md>
           <f7-list-input
@@ -154,6 +207,17 @@ import manage from "./manage";
 export default {
   data() {
     return {
+      imgsrc1: require('../../../assets/images/1.png'),
+      imgsrc2: require('../../../assets/images/2.png'),
+      imgsrc3: require('../../../assets/images/3.png'),
+      imgsrc4: require('../../../assets/images/4.png'),
+      imgsrc5: require('../../../assets/images/5.png'),
+      imgsrc6: require('../../../assets/images/6.png'),
+      imgsrc7: require('../../../assets/images/7.png'),
+      imgsrc8: require('../../../assets/images/8.png'),
+      imgsrc9: require('../../../assets/images/9.png'),
+      actionGridOpened: false,
+      changeIconRoomId: "",
       firstInit: true, // 首次加载
       loading: false,
       list: [],
@@ -196,17 +260,40 @@ export default {
     closeHandle() {
       this.popupOpened = false;
     },
+    // 选择图标
+    showIconChose(item) {
+      this.changeIconRoomId = item.roomId;
+      this.actionGridOpened = true;
+    },
+    getImgUrl(value) {
+      let temp = 'imgsrc'+value
+      return this[temp]
+    },
     editRemark(item, data) {
       // 关闭其他的输入框
       data.forEach(n => {
-        if(n.roomId == item.roomId) {
-
+        if (n.roomId == item.roomId) {
         } else {
-          n.showEditRemark = false
+          n.showEditRemark = false;
         }
-      })
-      item.showEditRemark = !item.showEditRemark
-      this.list = [...this.list]
+      });
+      item.showEditRemark = !item.showEditRemark;
+      this.list = [...this.list];
+    },
+    // 更改图标
+    async changeIcon(value) {
+      try {
+        let res = await this.$axios({
+          url: "app/heating/residentApp/modifyRoomIcon",
+          method: "post",
+          data: {
+            roomId: this.changeIconRoomId,
+            appIcon: value
+          }
+        });
+        this.initData();
+        global.toast(res.data.info);
+      } catch (error) {}
     },
     // 失去焦点
     async blurRemark(value) {
@@ -390,11 +477,11 @@ export default {
       });
       if (res.data.code == 200) {
         this.list = res.data.data;
-        this.list.forEach(n=> {
+        this.list.forEach(n => {
           n.houseRoomInfo.forEach(c => {
             c.showEditRemark = false;
-          })
-        })
+          });
+        });
         // this.list.forEach(k => {
         //   k.houseRoomInfo.forEach(async n => {
         //     let res = await this.$axios({
@@ -466,12 +553,22 @@ export default {
   justify-content: center;
 }
 .icon-home {
+  display: inline-block;
   width: 27px;
   height: 27px;
   background-image: url("../../images/sy1.png");
   background-size: 27px auto;
+  vertical-align:bottom;
   background-repeat: no-repeat;
-  margin: 0 auto;
+}
+.icon-chosen {
+  display: inline-block;
+  width: 27px;
+  height: 27px;
+  vertical-align:bottom;
+}
+.icon-chosen img {
+  width: 100%;
 }
 .icon-add {
   width: 32px;
@@ -576,5 +673,10 @@ export default {
 }
 .head-top .f7-icons-refresh {
   right: 60px !important;
+}
+.realTemp {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
 }
 </style>
