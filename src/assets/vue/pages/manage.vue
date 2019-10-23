@@ -185,7 +185,9 @@ export default {
               appUserId: window.localStorage.getItem("appUserId")
             }
           });
+          this.initData();
           global.toast(res.data.info);
+
         } catch (error) {}
       });
     },
