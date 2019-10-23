@@ -449,6 +449,14 @@ export default {
     },
     // 温度调控
     async editTemp(item, val) {
+      if(item.setTemp+ Number(val) > 35) {
+        global.toast("温度不能超过35度");
+        return;
+      }
+      if(item.setTemp+ Number(val) < 5) {
+        global.toast("温度不能低于5度");
+        return;
+      }
       let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${
           item.roomId
