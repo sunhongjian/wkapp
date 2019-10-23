@@ -43,21 +43,21 @@
                   </div>
                   <div class="realTemp">{{child.realTemp}}</div>
                   <div class="display-flex" style="margin-top: 5px">
-                    <div style="color: teal" @click="changeMode(child);">{{modelType(child)}}</div>
+                    <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div>
                     <div
                       @click="goModeDetail(child)"
                       v-if="child.modelType == 1"
                       class="icon-settings"
                     ></div>
                   </div>
-                  <div class="flex" style="width: 100%" v-if="child.modelType == 0">
+                  <div class="flex" style="width: 100%">
                     <div>
                       <f7-button
                         raised
                         round
                         small
                         class="icon-round"
-                        @click="editTemp(child,'-1')"
+                        @click="editTemp(child,'-1', item)"
                       >
                         <div class="icon-add"></div>
                       </f7-button>
@@ -68,13 +68,13 @@
                         round
                         small
                         class="icon-round"
-                        @click="editTemp(child, '1')"
+                        @click="editTemp(child, '1', item)"
                       >
                         <div class="icon-delete"></div>
                       </f7-button>
                     </div>
                     <div>
-                      <f7-button raised round small class="icon-round" @click="changeSwitch(child)">
+                      <f7-button raised round small class="icon-round" @click="changeSwitch(child, item)">
                         <div
                           class="icon-switch"
                           :class="{'icon-switch-open' : child.switchStatus == 'Y'}"
@@ -362,7 +362,11 @@ export default {
       });
     },
     // 变更模式
-    async changeMode(item) {
+    async changeMode(item, par) {
+      if(par.houseControlInfo.controlMode == 1) {
+        global.toast("分户住宅不能变更模式");
+        return;  
+      }
       console.log(item);
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
@@ -448,7 +452,11 @@ export default {
       }
     },
     // 温度调控
-    async editTemp(item, val) {
+    async editTemp(item, val, par) {
+      if(par.houseControlInfo.controlMode == 1) {
+        global.toast("分户住宅不能操控温度");
+        return;  
+      }
       if(item.setTemp+ Number(val) > 35) {
         global.toast("温度不能超过35度");
         return;
@@ -467,7 +475,11 @@ export default {
         item.setTemp = item.setTemp + Number(val);
       }
     },
-    async changeSwitch(item) {
+    async changeSwitch(item, par) {
+      if(par.houseControlInfo.controlMode == 1) {
+        global.toast("分户住宅不能操控开关");
+        return;  
+      }
       let status = item.switchStatus == "Y" ? "N" : "Y";
       let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${item.setTemp}/${status}`,
