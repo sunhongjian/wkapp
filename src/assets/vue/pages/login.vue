@@ -173,4 +173,7 @@ export default {
 .login-box img {
   width: 100%;
 }
+.list .item-floating-label, .list .item-label {
+  font-size: 14px;
+}
 </style>
