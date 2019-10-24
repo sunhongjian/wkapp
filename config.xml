@@ -1,67 +1,67 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.example.template" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="android-minSdkVersion" value="19" />
-    <preference name="android-targetSdkVersion" value="26" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="SplashScreenDelay" value="3000" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <hook src="hooks/hookers.js" type="before_prepare" />
-    <hook src="hooks/beforedep.js" type="before_deploy" />
-    <name>成诺智家巧控</name>
+    <preference name="android-minSdkVersion" value="19"/>
+    <preference name="android-targetSdkVersion" value="26"/>
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="SplashScreenDelay" value="3000"/>
+    <preference name="AutoHideSplashScreen" value="true"/>
+    <hook src="hooks/hookers.js" type="before_prepare"/>
+    <hook src="hooks/beforedep.js" type="before_deploy"/>
+    <name>&#x6210;&#x8BFA;&#x667A;&#x5BB6;&#x5DE7;&#x63A7;</name>
     <description>
-        成诺智家巧控
+        &#x6210;&#x8BFA;&#x667A;&#x5BB6;&#x5DE7;&#x63A7;
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-    <icon src="res/icon/icon.jpeg" />
-    <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
-    <plugin name="cordova-plugin-splashscreen" spec="5.0.3" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
+    <icon src="res/icon/icon.jpeg"/>
+    <content src="index.html"/>
+    <plugin name="cordova-plugin-whitelist" spec="1"/>
+    <plugin name="cordova-plugin-splashscreen" spec="5.0.3"/>
+    <access origin="*"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
     <platform name="android">
-        <icon density="ldpi" src="res/icon/android/mipmap-ldpi" />
-        <icon density="mdpi" src="res/icon/android/mipmap-mdpi" />
-        <icon density="hdpi" src="res/icon/android/mipmap-hdpi" />
-        <icon density="xhdpi" src="res/icon/android/mipmap-xhdpi" />
-        <icon density="xxhdpi" src="res/icon/android/mipmap-xxhdpi" />
-        <icon density="xxxhdpi" src="res/icon/android/mipmap-xxxhdpi" />
-        <splash density="land-ldpi" src="res/screen/android/drawable-land-ldpi/screen.png" />
-        <splash density="land-mdpi" src="res/screen/android/drawable-land-mdpi/screen.png" />
-        <splash density="land-hdpi" src="res/screen/android/drawable-land-hdpi/screen.png" />
-        <splash density="land-xhdpi" src="res/screen/android/drawable-land-xhdpi/screen.png" />
-        <splash density="land-xxhdpi" src="res/screen/android/drawable-land-xxhdpi/screen.png" />
-        <splash density="land-xxxhdpi" src="res/screen/android/drawable-land-xxxhdpi/screen.png" />
-        <splash density="port-ldpi" src="res/screen/android/drawable-port-ldpi/screen.png" />
-        <splash density="port-mdpi" src="res/screen/android/drawable-port-mdpi/screen.png" />
-        <splash density="port-hdpi" src="res/screen/android/drawable-port-hdpi/screen.png" />
-        <splash density="port-xhdpi" src="res/screen/android/drawable-port-xhdpi/screen.png" />
-        <splash density="port-xxhdpi" src="res/screen/android/drawable-port-xxhdpi/screen.png" />
-        <splash density="port-xxxhdpi" src="res/screen/android/drawable-port-xxxhdpi/screen.png" />
-        <allow-intent href="market:*" />
+        <icon density="ldpi" src="res/icon/android/mipmap-ldpi"/>
+        <icon density="mdpi" src="res/icon/android/mipmap-mdpi"/>
+        <icon density="hdpi" src="res/icon/android/mipmap-hdpi"/>
+        <icon density="xhdpi" src="res/icon/android/mipmap-xhdpi"/>
+        <icon density="xxhdpi" src="res/icon/android/mipmap-xxhdpi"/>
+        <icon density="xxxhdpi" src="res/icon/android/mipmap-xxxhdpi"/>
+        <splash density="land-ldpi" src="res/screen/android/drawable-land-ldpi/screen.png"/>
+        <splash density="land-mdpi" src="res/screen/android/drawable-land-mdpi/screen.png"/>
+        <splash density="land-hdpi" src="res/screen/android/drawable-land-hdpi/screen.png"/>
+        <splash density="land-xhdpi" src="res/screen/android/drawable-land-xhdpi/screen.png"/>
+        <splash density="land-xxhdpi" src="res/screen/android/drawable-land-xxhdpi/screen.png"/>
+        <splash density="land-xxxhdpi" src="res/screen/android/drawable-land-xxxhdpi/screen.png"/>
+        <splash density="port-ldpi" src="res/screen/android/drawable-port-ldpi/screen.png"/>
+        <splash density="port-mdpi" src="res/screen/android/drawable-port-mdpi/screen.png"/>
+        <splash density="port-hdpi" src="res/screen/android/drawable-port-hdpi/screen.png"/>
+        <splash density="port-xhdpi" src="res/screen/android/drawable-port-xhdpi/screen.png"/>
+        <splash density="port-xxhdpi" src="res/screen/android/drawable-port-xxhdpi/screen.png"/>
+        <splash density="port-xxxhdpi" src="res/screen/android/drawable-port-xxxhdpi/screen.png"/>
+        <allow-intent href="market:*"/>
     </platform>
     <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-        <icon src="res/ios/AppIcon.appiconset/icon-20@2x.png" width="40" height="40" />
-        <icon src="res/ios/AppIcon.appiconset/icon-20@3x.png" width="60" height="60" />
-        <icon src="res/ios/AppIcon.appiconset/icon-29.png" width="29" height="29" />
-        <icon src="res/ios/AppIcon.appiconset/icon-29@2x.png" width="58" height="58" />
-        <icon src="res/ios/AppIcon.appiconset/icon-29@3x.png" width="87" height="87" />
-        <icon src="res/ios/AppIcon.appiconset/icon-40@2x.png" width="80" height="80" />
-        <icon src="res/ios/AppIcon.appiconset/icon-40@3x.png" width="120" height="120" />
-        <icon src="res/ios/AppIcon.appiconset/icon-60@2x.png" width="120" height="120" />
-        <icon src="res/ios/AppIcon.appiconset/icon-60@3x.png" width="180" height="180" />
-        <icon src="res/ios/AppIcon.appiconset/icon-76.png" width="76" height="76" />
-        <icon src="res/ios/AppIcon.appiconset/icon-76@2x.png" width="152" height="152" />
-        <icon src="res/ios/AppIcon.appiconset/icon-83.5@2x.png" width="167" height="167" />
-        <icon src="res/icon/ios/AppIcon.appiconset/icon-1024.png" width="1024" height="1024" />
+        <allow-intent href="itms:*"/>
+        <allow-intent href="itms-apps:*"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-20@2x.png" width="40" height="40"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-20@3x.png" width="60" height="60"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-29.png" width="29" height="29"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-29@2x.png" width="58" height="58"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-29@3x.png" width="87" height="87"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-40@2x.png" width="80" height="80"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-40@3x.png" width="120" height="120"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-60@2x.png" width="120" height="120"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-60@3x.png" width="180" height="180"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-76.png" width="76" height="76"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-76@2x.png" width="152" height="152"/>
+        <icon src="res/ios/AppIcon.appiconset/icon-83.5@2x.png" width="167" height="167"/>
+        <icon src="res/icon/ios/AppIcon.appiconset/icon-1024.png" width="1024" height="1024"/>
         <splash src="res/screen/ios/LaunchImage.launchimage/Default~iphone.png" width="320" height="480"/>
         <splash src="res/screen/ios/LaunchImage.launchimage/Default@2x~iphone.png" width="640" height="960"/>
         <splash src="res/screen/ios/LaunchImage.launchimage/Default-Portrait~ipad.png" width="768" height="1024"/>
@@ -72,7 +72,7 @@
         <splash src="res/screen/ios/LaunchImage.launchimage/Default-667h.png" width="750" height="1334"/>
         <splash src="res/screen/ios/LaunchImage.launchimage/Default-736h.png" width="1242" height="2208"/>
     </platform>
-    <allow-navigation href="*" />
-    <engine name="browser" spec="^6.0.0" />
-    <engine name="android" spec="^8.0.0" />
+    <allow-navigation href="*"/>
+    <engine name="browser" spec="^6.0.0"/>
+    <engine name="android" spec="^8.0.0"/>
 </widget>
