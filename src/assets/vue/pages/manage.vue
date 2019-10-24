@@ -18,6 +18,9 @@
         <div class="right-content" v-if="item.flag == 0" @click.stop="handleSub(item)">
           <i class="f7-icons">settings</i>
         </div>
+        <div class="right-content" v-if="item.flag == 1" @click.stop="trashViceBySelf(item)">
+          <i class="f7-icons">trash</i>
+        </div>
       </div>
     </div>
     <f7-popup class="demo-popup" :opened="popupOpenedCk" @popup:closed="popupOpenedCk = false">
@@ -102,6 +105,22 @@ export default {
       if (res.data.code == 200) {
         this.list = res.data.data;
       }
+    },
+    // 从控删除自己
+    trashViceBySelf(item) {
+      this.$f7.dialog.confirm('确认删除该从控吗?', '提示', async () => {
+        try {
+          let res = await this.$axios({
+            url: `/app/heating/residentApp/deleteSlaveControl/${item.controlId}`,
+            method: "get",
+          });
+          this.initData();
+          global.toast(res.data.info);    
+
+        } catch (error) {}
+      })
+      console.log(item)
+      
     },
     editHouseName(id) {
        this.$f7.dialog.prompt("请输入新名称", async code => {
