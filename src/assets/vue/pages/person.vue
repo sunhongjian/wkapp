@@ -1,5 +1,6 @@
 <template>
-  <div>
+   <f7-page class="bg-white">
+     <f7-navbar title="版本信息" back-link="返回"></f7-navbar>
     <f7-block-title>关于</f7-block-title>
     <f7-list>
       <f7-list-item title="版本信息" link="/version/"></f7-list-item>
@@ -58,7 +59,7 @@
         </f7-block>
       </f7-page>
     </f7-popup>
-  </div>
+   </f7-page>
 </template>
 
 <script>

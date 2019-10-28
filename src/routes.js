@@ -14,6 +14,7 @@ import Manage from './assets/vue/pages/manage'
 import MyHome from './assets/vue/pages/myHome'
 import Login from './assets/vue/pages/login'
 import Version from './assets/vue/pages/version'
+import Person from './assets/vue/pages/person'
 
 export default [
   {
@@ -23,6 +24,10 @@ export default [
   {
     path: '/login/',
     component: Login,
+  },
+  {
+    path: '/person/',
+    component: Person,
   },
   {
     path: '/register/',

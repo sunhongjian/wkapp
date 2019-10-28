@@ -1,19 +1,30 @@
 <template>
   <f7-page>
+    <loading :show="loadingSwitch"></loading>
     <!-- Slider main container -->
     <div class="swiper-container main-slide">
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         <!-- Slides -->
-        <div v-if="list.length == 0" class="add-block">
+        <div v-if="list.length == 0 && !loadingSwitch" class="add-block">
           <i @click="add" style="color: teal" class="f7-icons">add</i>
         </div>
         <div class="swiper-slide" v-for="item in list">
           <div class="bg-white">
             <div class="head-top">
+              <div class="main-nav">
+                <div class="main-nav-sett">
+                   <f7-link href="/person/">
+                    <i class="f7-icons">settings</i>
+                   </f7-link>        
+                </div>
+                <div class="main-nav-title">巧控</div>
+                <div class="main-nav-list">
+                  <i @click="goDetail()" class="f7-icons">list</i>
+                </div>
+              </div>
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <div class="sub-title">{{item.houseControlInfo.address}}</div>
-              <i @click="goDetail()" class="f7-icons">list</i>
               <i @click="initData()" class="f7-icons f7-icons-refresh">refresh</i>
             </div>
             <div style="padding: 10px" class="group">
@@ -41,7 +52,7 @@
                       <span style="font-size: 18px; color: #ffcc00">{{child.setTemp}}°</span>
                     </div>
                   </div>
-                  <div class="realTemp">{{child.realTemp}}</div>
+                  <div class="realTemp">{{child.realTemp}}°</div>
                   <div class="display-flex" style="margin-top: 5px">
                     <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div>
                     <div
@@ -102,9 +113,10 @@
           </f7-nav-right>
         </f7-navbar>
         <div>
-          <div class="list media-list">
+          <div class="list media-list" style="margin-top: 0">
+            <div style="padding: 15px; color: #888">周一至周五</div>
             <ul>
-              <li class="media-item" v-for="item in 8">
+              <li class="media-item" v-for="(item, idx) in 4" :key="idx">
                 <div class="item-content">
                   <div class="item-inner">
                     <div class="item-title-row">
@@ -112,13 +124,34 @@
                       <div class="item-after">
                         <span>{{modeDetailData['temp'+item]}}°</span>
                         <span>
-                          <f7-link popover-open=".popover-menu" @click="editDetail(item)">
+                          <f7-link popover-open=".popover-menu" v-if="modeDetailData.isEdit" @click="editDetail(item)">
                             <i style="color: teal;" class="f7-icons">edit</i>
                           </f7-link>
                         </span>
                       </div>
                     </div>
                     <div class="item-subtitle">{{modeDetailData['starttime'+item]}}</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div style="padding: 15px; color: #888">周六周日</div>
+            <ul>
+              <li class="media-item" v-for="(item, idx) in 4" :key="idx">
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">{{modeDetailData['time'+Number(item+4)]}}</div>
+                      <div class="item-after">
+                        <span>{{modeDetailData['temp'+Number(item+4)]}}°</span>
+                        <span>
+                          <f7-link popover-open=".popover-menu" v-if="modeDetailData.isEdit" @click="editDetail(Number(item+4))">
+                            <i style="color: teal;" class="f7-icons">edit</i>
+                          </f7-link>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="item-subtitle">{{modeDetailData['starttime'+Number(item+4)]}}</div>
                   </div>
                 </div>
               </li>
@@ -203,6 +236,7 @@ import Swiper from "swiper";
 import global from "../../../global";
 import { mapState, mapMutations } from "vuex";
 import manage from "./manage";
+import loading from "../components/loading"
 
 export default {
   data() {
@@ -217,6 +251,7 @@ export default {
       imgsrc8: require('../../../assets/images/8.png'),
       imgsrc9: require('../../../assets/images/9.png'),
       actionGridOpened: false,
+      loadingSwitch: false,
       changeIconRoomId: "",
       firstInit: true, // 首次加载
       loading: false,
@@ -233,7 +268,8 @@ export default {
     };
   },
   components: {
-    manage
+    manage,
+    loading
   },
   created() {
     window.x = this;
@@ -320,7 +356,7 @@ export default {
       res.data.data.forEach(element => {
         if (element.isPresent == 0) {
           this.modeDetailData = element.details;
-          if (element.modelId == 4) {
+          if (element.modelFlag == 1) {
             this.modeDetailData.isEdit = true;
           }
         }
@@ -369,10 +405,12 @@ export default {
         return;  
       }
       console.log(item);
+      this.loadingSwitch = true
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
         method: "get"
       });
+      this.loadingSwitch = false
       let buttons = [];
       res.data.data.forEach(element => {
         const self = this;
@@ -493,11 +531,13 @@ export default {
       }
     },
     async initData(event, done) {
+      this.loadingSwitch = true;
       let appUserId = window.localStorage.getItem("appUserId");
       let res = await this.$axios({
         url: `app/heating/residentApp/getHouseAndRoomList/${appUserId}`,
         method: "get"
       });
+      this.loadingSwitch = false;
       if (res.data.code == 200) {
         this.list = res.data.data;
         this.list.forEach(n => {
@@ -552,10 +592,13 @@ export default {
 </script>
 <style>
 .main-slide {
-  height: calc(100vh - 50px);
+  height: calc(100vh);
 }
 </style>
 <style scoped>
+.main-nav {
+
+}
 .add-block {
   width: 100%;
   display: flex;
@@ -680,7 +723,7 @@ export default {
 .head-top .title {
   font-size: 20px;
   padding: 10px 20px;
-  padding-top: 60px;
+  padding-top: 20px;
   color: teal;
 }
 .head-top .sub-title {
@@ -688,14 +731,30 @@ export default {
   font-size: 16px;
   padding-left: 20px;
 }
-.head-top .f7-icons {
-  position: absolute;
-  right: 20px;
-  top: 60px;
-  color: teal;
+.main-nav {
+  display: flex;
+}
+.main-nav-title {
+  flex: 1;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 20px;
+  color: #005454;
+}
+.main-nav-sett .f7-icons {
+  padding: 20px;
+  color: #005454;
+}
+.main-nav-list .f7-icons {
+  padding: 20px;
+  color: #005454;
 }
 .head-top .f7-icons-refresh {
-  right: 60px !important;
+  position: absolute;
+  top: 80px;
+  color: teal;
+  font-size: 40px;
+  right: 20px !important;
 }
 .realTemp {
   text-align: center;
