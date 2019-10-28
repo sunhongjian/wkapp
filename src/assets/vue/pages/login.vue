@@ -8,7 +8,7 @@
         </div>
       </f7-block>
 
-      <f7-list no-hairlines-md style="margin: 0 30px">
+      <f7-list no-hairlines-md style="margin: 0 auto; padding: 0 20px">
         <f7-list-input
           label="账号"
           type="text"
@@ -28,7 +28,7 @@
         ></f7-list-input>
         <f7-list-item></f7-list-item>
       </f7-list>
-      <f7-block style="margin: 0 20px">
+      <f7-block style="margin: 0 auto; padding: 0 20px">
         <f7-row>
           <f7-col>
             <f7-button large fill round @click="login">登录</f7-button>

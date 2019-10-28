@@ -259,6 +259,7 @@ export default {
     },
     closeHandle() {
       this.popupOpened = false;
+      this.initData();
     },
     // 选择图标
     showIconChose(item) {
@@ -486,6 +487,8 @@ export default {
         method: "get"
       });
       if (res.data.code == 200) {
+        let msg = item.switchStatus == "N" ? "已开启" : "已关闭";
+        global.toast(msg);
         item.switchStatus = item.switchStatus == "Y" ? "N" : "Y";
       }
     },
