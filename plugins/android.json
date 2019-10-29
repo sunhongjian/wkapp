@@ -7,11 +7,15 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.qiaokong"
+    },
     "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.example.template"
+      "PACKAGE_NAME": "com.qiaokong"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.example.template"
+      "PACKAGE_NAME": "com.qiaokong"
     }
   },
   "dependent_plugins": {}

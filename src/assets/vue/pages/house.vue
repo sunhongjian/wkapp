@@ -14,9 +14,9 @@
             <div class="head-top">
               <div class="main-nav">
                 <div class="main-nav-sett">
-                   <f7-link href="/person/">
+                  <f7-link href="/person/">
                     <i class="f7-icons">settings</i>
-                   </f7-link>        
+                  </f7-link>
                 </div>
                 <div class="main-nav-title">巧控</div>
                 <div class="main-nav-list">
@@ -25,7 +25,9 @@
               </div>
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <div class="sub-title">{{item.houseControlInfo.address}}</div>
+              <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
               <i @click="initData()" class="f7-icons f7-icons-refresh">refresh</i>
+              <div class="moshipaixu" @click="modeAndSort(item)">模式和排序</div>
             </div>
             <div style="padding: 10px" class="group">
               <div class="item" v-for="child in item.houseRoomInfo">
@@ -47,19 +49,19 @@
                       </span>
                       <span v-if="!child.appIcon" class="icon-home" @click="showIconChose(child)"></span>
                       <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
-                        <img :src="getImgUrl(child.appIcon)" alt="">
+                        <img :src="getImgUrl(child.appIcon)" alt />
                       </span>
                       <span style="font-size: 18px; color: #ffcc00">{{child.setTemp}}°</span>
                     </div>
                   </div>
                   <div class="realTemp">{{child.realTemp}}°</div>
                   <div class="display-flex" style="margin-top: 5px">
-                    <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div>
-                    <div
+                    <!-- <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div> -->
+                    <!-- <div
                       @click="goModeDetail(child)"
                       v-if="child.modelType == 1"
                       class="icon-settings"
-                    ></div>
+                    ></div>-->
                   </div>
                   <div class="flex" style="width: 100%">
                     <div>
@@ -85,7 +87,13 @@
                       </f7-button>
                     </div>
                     <div>
-                      <f7-button raised round small class="icon-round" @click="changeSwitch(child, item)">
+                      <f7-button
+                        raised
+                        round
+                        small
+                        class="icon-round"
+                        @click="changeSwitch(child, item)"
+                      >
                         <div
                           class="icon-switch"
                           :class="{'icon-switch-open' : child.switchStatus == 'Y'}"
@@ -105,129 +113,46 @@
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
       <manage ref="manage" @closeHandle="closeHandle"></manage>
     </f7-popup>
-    <f7-popup class="demo-popup" :opened="popupRoom" @popup:closed="popupRoom = false">
-      <f7-page>
-        <f7-navbar title="温控详情">
-          <f7-nav-right>
-            <f7-link popup-close>关闭</f7-link>
-          </f7-nav-right>
-        </f7-navbar>
-        <div>
-          <div class="list media-list" style="margin-top: 0">
-            <div style="padding: 15px; color: #888">周一至周五</div>
-            <ul>
-              <li class="media-item" v-for="(item, idx) in 4" :key="idx">
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">{{modeDetailData['time'+item]}}</div>
-                      <div class="item-after">
-                        <span>{{modeDetailData['temp'+item]}}°</span>
-                        <span>
-                          <f7-link popover-open=".popover-menu" v-if="modeDetailData.isEdit" @click="editDetail(item)">
-                            <i style="color: teal;" class="f7-icons">edit</i>
-                          </f7-link>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="item-subtitle">{{modeDetailData['starttime'+item]}}</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            <div style="padding: 15px; color: #888">周六周日</div>
-            <ul>
-              <li class="media-item" v-for="(item, idx) in 4" :key="idx">
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">{{modeDetailData['time'+Number(item+4)]}}</div>
-                      <div class="item-after">
-                        <span>{{modeDetailData['temp'+Number(item+4)]}}°</span>
-                        <span>
-                          <f7-link popover-open=".popover-menu" v-if="modeDetailData.isEdit" @click="editDetail(Number(item+4))">
-                            <i style="color: teal;" class="f7-icons">edit</i>
-                          </f7-link>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="item-subtitle">{{modeDetailData['starttime'+Number(item+4)]}}</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </f7-page>
-      <!-- 选择图标 -->
-      <f7-actions
-        :grid="true"
-        :opened="actionGridOpened"
-        @actions:closed="actionGridOpened = false"
-      >
-        <f7-actions-group>
-          <f7-actions-button @click="changeIcon(1)">
-            <img slot="media" src="../../../assets/images/1.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(2)"> 
-            <img slot="media" src="../../../assets/images/2.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(3)"> 
-            <img slot="media" src="../../../assets/images/3.png" width="48" />
-          </f7-actions-button>
-        </f7-actions-group>
-        <f7-actions-group>
-          <f7-actions-button @click="changeIcon(4)"> 
-            <img slot="media" src="../../../assets/images/4.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(5)"> 
-            <img slot="media" src="../../../assets/images/5.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(6)"> 
-            <img slot="media" src="../../../assets/images/6.png" width="48" />
-          </f7-actions-button>
-        </f7-actions-group>
-        <f7-actions-group>
-          <f7-actions-button @click="changeIcon(7)"> 
-            <img slot="media" src="../../../assets/images/7.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(8)"> 
-            <img slot="media" src="../../../assets/images/8.png" width="48" />
-          </f7-actions-button>
-          <f7-actions-button @click="changeIcon(9)"> 
-            <img slot="media" src="../../../assets/images/9.png" width="48" />
-          </f7-actions-button>
-        </f7-actions-group>
-      </f7-actions>
-      <f7-popover class="popover-menu" :opened="true">
-        <f7-list inline-labels no-hairlines-md>
-          <f7-list-input
-            label="名称"
-            type="text"
-            :value="condition.time"
-            @input="condition.time = $event.target.value"
-            placeholder="名称"
-          ></f7-list-input>
-          <f7-list-input
-            label="开始时间"
-            type="text"
-            :value="condition.starttime"
-            @input="condition.starttime = $event.target.value"
-            placeholder="开始时间"
-          ></f7-list-input>
-          <f7-list-input
-            label="温度"
-            type="text"
-            :value="condition.temp"
-            @input="condition.temp = $event.target.value"
-            placeholder="温度"
-          ></f7-list-input>
-        </f7-list>
-        <div style="padding: 20px;">
-          <f7-button popover-close style="background: teal; color: #fff;" round @click="saveTemp">保存</f7-button>
-        </div>
-      </f7-popover>
+    <!-- 排序 -->
+    <f7-popup class="demo-popup" :opened="popupSort" @popup:closed="popupSort = false">
+      <sort ref="sort" @closeHandle="closeHandleSort"></sort>
     </f7-popup>
+    <!-- 选择图标 -->
+    <f7-actions :grid="true" :opened="actionGridOpened" @actions:closed="actionGridOpened = false">
+      <f7-actions-group>
+        <f7-actions-button @click="changeIcon(1)">
+          <img slot="media" src="../../../assets/images/1.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(2)">
+          <img slot="media" src="../../../assets/images/2.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(3)">
+          <img slot="media" src="../../../assets/images/3.png" width="48" />
+        </f7-actions-button>
+      </f7-actions-group>
+      <f7-actions-group>
+        <f7-actions-button @click="changeIcon(4)">
+          <img slot="media" src="../../../assets/images/4.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(5)">
+          <img slot="media" src="../../../assets/images/5.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(6)">
+          <img slot="media" src="../../../assets/images/6.png" width="48" />
+        </f7-actions-button>
+      </f7-actions-group>
+      <f7-actions-group>
+        <f7-actions-button @click="changeIcon(7)">
+          <img slot="media" src="../../../assets/images/7.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(8)">
+          <img slot="media" src="../../../assets/images/8.png" width="48" />
+        </f7-actions-button>
+        <f7-actions-button @click="changeIcon(9)">
+          <img slot="media" src="../../../assets/images/9.png" width="48" />
+        </f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
   </f7-page>
 </template>
 
@@ -236,20 +161,21 @@ import Swiper from "swiper";
 import global from "../../../global";
 import { mapState, mapMutations } from "vuex";
 import manage from "./manage";
-import loading from "../components/loading"
+import sort from "./sort";
+import loading from "../components/loading";
 
 export default {
   data() {
     return {
-      imgsrc1: require('../../../assets/images/1.png'),
-      imgsrc2: require('../../../assets/images/2.png'),
-      imgsrc3: require('../../../assets/images/3.png'),
-      imgsrc4: require('../../../assets/images/4.png'),
-      imgsrc5: require('../../../assets/images/5.png'),
-      imgsrc6: require('../../../assets/images/6.png'),
-      imgsrc7: require('../../../assets/images/7.png'),
-      imgsrc8: require('../../../assets/images/8.png'),
-      imgsrc9: require('../../../assets/images/9.png'),
+      imgsrc1: require("../../../assets/images/1.png"),
+      imgsrc2: require("../../../assets/images/2.png"),
+      imgsrc3: require("../../../assets/images/3.png"),
+      imgsrc4: require("../../../assets/images/4.png"),
+      imgsrc5: require("../../../assets/images/5.png"),
+      imgsrc6: require("../../../assets/images/6.png"),
+      imgsrc7: require("../../../assets/images/7.png"),
+      imgsrc8: require("../../../assets/images/8.png"),
+      imgsrc9: require("../../../assets/images/9.png"),
       actionGridOpened: false,
       loadingSwitch: false,
       changeIconRoomId: "",
@@ -258,18 +184,14 @@ export default {
       list: [],
       popupOpened: false,
       popupRoom: false,
-      modeDetailData: {}, // 温度详情
-      condition: {
-        time: "",
-        starttime: "",
-        temp: "",
-        num: ""
-      } // 暂存温度
+      popupSort: false,
+      modeDetailData: {} // 温度详情
     };
   },
   components: {
     manage,
-    loading
+    loading,
+    sort
   },
   created() {
     window.x = this;
@@ -297,14 +219,18 @@ export default {
       this.popupOpened = false;
       this.initData();
     },
+    closeHandleSort() {
+      this.popupSort = false;
+      // this.initData();
+    },
     // 选择图标
     showIconChose(item) {
       this.changeIconRoomId = item.roomId;
       this.actionGridOpened = true;
     },
     getImgUrl(value) {
-      let temp = 'imgsrc'+value
-      return this[temp]
+      let temp = "imgsrc" + value;
+      return this[temp];
     },
     editRemark(item, data) {
       // 关闭其他的输入框
@@ -379,110 +305,6 @@ export default {
         } catch (error) {}
       });
     },
-    editDetail(item) {
-      this.condition.starttime = this.modeDetailData["starttime" + item];
-      this.condition.time = this.modeDetailData["time" + item];
-      this.condition.temp = this.modeDetailData["temp" + item];
-      this.condition.num = item;
-    },
-    // 修改子模式中自定义模式
-    async saveTemp() {
-      this.modeDetailData[
-        "starttime" + this.condition.num
-      ] = this.condition.starttime;
-      this.modeDetailData["time" + this.condition.num] = this.condition.time;
-      this.modeDetailData["temp" + this.condition.num] = this.condition.temp;
-      let res = await this.$axios({
-        url: "app/heating/residentApp/modifyModelDetails",
-        method: "post",
-        data: this.modeDetailData
-      });
-    },
-    // 变更模式
-    async changeMode(item, par) {
-      if(par.houseControlInfo.controlMode == 1) {
-        global.toast("分户住宅不能变更模式");
-        return;  
-      }
-      console.log(item);
-      this.loadingSwitch = true
-      let res = await this.$axios({
-        url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
-        method: "get"
-      });
-      this.loadingSwitch = false
-      let buttons = [];
-      res.data.data.forEach(element => {
-        const self = this;
-        let text = "";
-        if (element.isPresent == 0 && item.modelType == 1) {
-          text =
-            '<i style="color: teal" class="f7-icons">check</i>' +
-            element.modelName;
-        } else {
-          text = element.modelName;
-        }
-        buttons.push({
-          text,
-          async onClick(val) {
-            if (item.modelType == 0) {
-              let resMode = await self.$axios({
-                url: `app/heating/residentApp/changeRoomModel/${item.roomId}`,
-                method: "get"
-              });
-              if (resMode.data.code == 200) {
-                item.modelType = item.modelType == "0" ? "1" : "0";
-              }
-            }
-            let res = await self.$axios({
-              url: `app/heating/residentApp/applyModel/${item.roomId}/${element.modelId}`,
-              method: "get"
-            });
-            console.log(element);
-          }
-        });
-      });
-      const self = this;
-      const app = self.$f7;
-      self.actionsToPopover = app.actions.create({
-        buttons: [
-          [
-            {
-              text: "自由模式",
-              async onClick(val) {
-                if (item.modelType == 1) {
-                  let resMode = await self.$axios({
-                    url: `app/heating/residentApp/changeRoomModel/${item.roomId}`,
-                    method: "get"
-                  });
-                  if (resMode.data.code == 200) {
-                    item.modelType = item.modelType == "0" ? "1" : "0";
-                  }
-                }
-              }
-            }
-          ],
-          buttons,
-          [
-            {
-              text: "取消",
-              color: "red"
-            }
-          ]
-        ],
-        targetEl: self.$el.querySelector(".button-to-popover")
-      });
-      self.actionsToPopover.open();
-      // let res = await this.$axios({
-      //   url: `app/heating/residentApp/changeRoomModel/${
-      //     item.roomId
-      //   }`,
-      //   method: "get"
-      // });
-      // if (res.data.code == 200) {
-      //   item.modelType = item.modelType == '0' ? '1' : '0'
-      // }
-    },
     modelType(child) {
       if (child.modelType == 0) {
         return "自由模式";
@@ -490,17 +312,38 @@ export default {
         return "编程模式";
       }
     },
+    // 模式和排序
+    async modeAndSort(item) {
+      this.loadingSwitch = true;
+      let res = await this.$axios({
+        url: `app/heating/residentApp/getRoomHeatOrder/${item.houseControlInfo.houseMgtId}`,
+        method: "get"
+      });
+      this.loadingSwitch = false;
+      let temp = res.data.data;
+      item.houseRoomInfo.forEach(n => {
+        temp.forEach(child => {
+          if (n.roomId == child.roomId) {
+            child.houseRoomInfo = n;
+          }
+        });
+      });
+      this.$refs.sort.list = temp;
+      console.log(temp);
+      this.$refs.sort.houseControlInfo = item.houseControlInfo;
+      this.popupSort = true;
+    },
     // 温度调控
     async editTemp(item, val, par) {
-      if(par.houseControlInfo.controlMode == 1) {
+      if (par.houseControlInfo.controlMode == 1) {
         global.toast("分户住宅不能操控温度");
-        return;  
+        return;
       }
-      if(item.setTemp+ Number(val) > 35) {
+      if (item.setTemp + Number(val) > 35) {
         global.toast("温度不能超过35度");
         return;
       }
-      if(item.setTemp+ Number(val) < 5) {
+      if (item.setTemp + Number(val) < 5) {
         global.toast("温度不能低于5度");
         return;
       }
@@ -515,9 +358,9 @@ export default {
       }
     },
     async changeSwitch(item, par) {
-      if(par.houseControlInfo.controlMode == 1) {
+      if (par.houseControlInfo.controlMode == 1) {
         global.toast("分户住宅不能操控开关");
-        return;  
+        return;
       }
       let status = item.switchStatus == "Y" ? "N" : "Y";
       let res = await this.$axios({
@@ -531,6 +374,11 @@ export default {
       }
     },
     async initData(event, done) {
+      // if (document.querySelector(".swiper-container")) {
+      //   var mySwiper = document.querySelector(".swiper-container").swiper;
+      //   mySwiper.destroy();
+      // }
+
       this.loadingSwitch = true;
       let appUserId = window.localStorage.getItem("appUserId");
       let res = await this.$axios({
@@ -565,21 +413,23 @@ export default {
           if (this.list.length == 0) {
             return;
           }
-          if (this.firstInit) {
-            var swiper = new Swiper(".swiper-container", {
-              renderBullet: function(index, className) {
-                return (
-                  '<span class="' + className + '">' + (index + 1) + "</span>"
-                );
-              },
-              pagination: {
-                el: ".swiper-pagination",
-                type: "bullets"
-              }
-            });
-            swiper.init();
-            this.firstInit = false;
+          if (!this.firstInit) {
+            var mySwiper = document.querySelector(".swiper-container").swiper;
+            mySwiper.destroy();
           }
+          var swiper = new Swiper(".swiper-container", {
+            renderBullet: function(index, className) {
+              return (
+                '<span class="' + className + '">' + (index + 1) + "</span>"
+              );
+            },
+            pagination: {
+              el: ".swiper-pagination",
+              type: "bullets"
+            }
+          });
+          swiper.init();
+          this.firstInit = false;
         });
       }
       if (done) {
@@ -597,7 +447,11 @@ export default {
 </style>
 <style scoped>
 .main-nav {
-
+}
+.moshipaixu {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 .add-block {
   width: 100%;
@@ -624,14 +478,14 @@ export default {
   height: 27px;
   background-image: url("../../images/sy1.png");
   background-size: 27px auto;
-  vertical-align:bottom;
+  vertical-align: bottom;
   background-repeat: no-repeat;
 }
 .icon-chosen {
   display: inline-block;
   width: 27px;
   height: 27px;
-  vertical-align:bottom;
+  vertical-align: bottom;
 }
 .icon-chosen img {
   width: 100%;
@@ -716,7 +570,7 @@ export default {
 }
 .head-top {
   position: relative;
-  height: 160px;
+  height: 180px;
   background-image: url("../../images/headtop.png");
   background-size: 100% 100%;
 }
@@ -729,6 +583,12 @@ export default {
 .head-top .sub-title {
   color: teal;
   font-size: 16px;
+  padding-left: 20px;
+}
+.head-top .sub-time-title {
+  color: teal;
+  font-size: 12px;
+  margin-top: 10px;
   padding-left: 20px;
 }
 .main-nav {
@@ -760,5 +620,6 @@ export default {
   text-align: center;
   font-size: 30px;
   font-weight: bold;
+  margin-top: 10px;
 }
 </style>

@@ -47,7 +47,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "axios": "^0.19.0",
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^8.1.0",
+    "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-splashscreen": "^5.0.3",
     "fastclick": "^1.0.6",
@@ -59,12 +60,16 @@
     "material-design-icons": "^3.0.1",
     "swiper": "^4.5.0",
     "vue": "^2.6.10",
+    "vuedraggable": "^2.23.2",
     "vuex": "^3.1.1"
   },
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-splashscreen": {}
+      "cordova-plugin-splashscreen": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     },
     "platforms": [
       "browser",

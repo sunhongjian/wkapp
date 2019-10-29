@@ -12,6 +12,9 @@
     },
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.example.template"
+    },
+    "cordova-android-support-gradle-release": {
+      "PACKAGE_NAME": "com.example.template"
     }
   },
   "dependent_plugins": {}
