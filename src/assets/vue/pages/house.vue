@@ -18,7 +18,7 @@
                     <i class="f7-icons">settings</i>
                   </f7-link>
                 </div>
-                <div class="main-nav-title">巧控</div>
+                <div class="main-nav-title">成诺智家</div>
                 <div class="main-nav-list">
                   <i @click="goDetail()" class="f7-icons">list</i>
                 </div>
@@ -30,7 +30,7 @@
               <div class="moshipaixu" @click="modeAndSort(item)">模式和排序</div>
             </div>
             <div style="padding: 10px" class="group">
-              <div class="item" v-for="child in item.houseRoomInfo">
+              <div class="item" v-for="child in item.houseRoomInfo" :class="{'gray-theme': child.switchStatus == 'N'}">
                 <div class="item-inner-content">
                   <div style="text-align: center; margin-bottom: 5px">
                     <div>
@@ -335,6 +335,10 @@ export default {
     },
     // 温度调控
     async editTemp(item, val, par) {
+      if(item.switchStatus == 'N') {
+        global.toast("请先开机");
+        return;     
+      }
       if (par.houseControlInfo.controlMode == 1) {
         global.toast("分户住宅不能操控温度");
         return;
@@ -447,6 +451,9 @@ export default {
 </style>
 <style scoped>
 .main-nav {
+}
+.gray-theme {
+  filter: grayscale(100%);
 }
 .moshipaixu {
   position: absolute;
