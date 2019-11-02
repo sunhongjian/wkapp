@@ -51,7 +51,7 @@
                       <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
                         <img :src="getImgUrl(child.appIcon)" alt />
                       </span>
-                      <span style="font-size: 18px; color: #ffcc00">{{child.setTemp}}°</span>
+                      <span style="font-size: 18px; color: #5a2005">{{child.setTemp}}°</span>
                     </div>
                   </div>
                   <div class="realTemp">{{child.realTemp}}°</div>
