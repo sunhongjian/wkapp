@@ -625,7 +625,7 @@ export default {
 }
 .realTemp {
   text-align: center;
-  font-size: 30px;
+  font-size: 35px;
   font-weight: bold;
   margin-top: 10px;
 }
