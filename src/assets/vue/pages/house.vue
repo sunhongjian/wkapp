@@ -26,7 +26,7 @@
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <div class="sub-title">{{item.houseControlInfo.address}}</div>
               <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
-              <i @click="initData()" class="f7-icons f7-icons-refresh">refresh</i>
+              <div @click="initData()" class="house-refresh"></div>
               <div class="moshipaixu" @click="modeAndSort(item)">模式和排序</div>
             </div>
             <div style="padding: 10px" class="group">
@@ -496,6 +496,17 @@ export default {
 }
 .icon-chosen img {
   width: 100%;
+}
+.house-refresh {
+  position: absolute;
+  top: 80px;
+  color: teal;
+  font-size: 40px;
+  right: 20px !important;
+  width: 35px;
+  height: 35px;
+  background-size: 35px auto;
+  background-image: url("../../images/refresh.png")
 }
 .icon-add {
   width: 32px;
