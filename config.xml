@@ -7,12 +7,12 @@
     <preference name="AutoHideSplashScreen" value="true" />
     <hook src="hooks/hookers.js" type="before_prepare" />
     <hook src="hooks/beforedep.js" type="before_deploy" />
-    <name>成诺智家巧控</name>
+    <name>成诺智家</name>
     <description>
-       成诺智家巧控
+       成诺智家
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
-        成诺智家巧控
+        成诺智家
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
