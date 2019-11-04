@@ -27,7 +27,7 @@
               <!-- <div class="sub-title">{{item.houseControlInfo.address}}</div> -->
               <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
               <div @click="initData()" class="house-refresh"></div>
-              <div class="moshipaixu" @click="modeAndSort(item)">模式和排序</div>
+              <f7-button class="moshipaixu" @click="modeAndSort(item)" fill round>模式和排序</f7-button>
             </div>
             <div style="padding: 10px" class="group">
               <div class="item" v-for="child in item.houseRoomInfo" :class="{'gray-theme': child.switchStatus == 'N'}">
@@ -221,7 +221,7 @@ export default {
     },
     closeHandleSort() {
       this.popupSort = false;
-      // this.initData();
+      this.initData();
     },
     // 选择图标
     showIconChose(item) {
