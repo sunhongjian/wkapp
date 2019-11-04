@@ -24,7 +24,7 @@
                 </div>
               </div>
               <div class="title">{{item.houseControlInfo.houseName}}</div>
-              <div class="sub-title">{{item.houseControlInfo.address}}</div>
+              <!-- <div class="sub-title">{{item.houseControlInfo.address}}</div> -->
               <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
               <div @click="initData()" class="house-refresh"></div>
               <div class="moshipaixu" @click="modeAndSort(item)">模式和排序</div>

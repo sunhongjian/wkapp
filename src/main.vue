@@ -13,7 +13,7 @@ import routes from "./routes.js";
 import loginPage from "./assets/vue/pages/login";
 import global from './global';
 
-let theme = "auto";
+let theme = "ios";
 if (document.location.search.indexOf("theme=") >= 0) {
   theme = document.location.search.split("theme=")[1].split("&")[0];
 }
