@@ -340,7 +340,7 @@ export default {
         return;     
       }
       if (par.houseControlInfo.controlMode == 0) {
-        global.toast("分户住宅不能操控温度");
+        global.toast("集中户住宅不能操控温度");
         return;
       }
       if (item.setTemp + Number(val) > 35) {
@@ -363,7 +363,7 @@ export default {
     },
     async changeSwitch(item, par) {
       if (par.houseControlInfo.controlMode == 0) {
-        global.toast("分户住宅不能操控开关");
+        global.toast("集中户住宅不能操控开关");
         return;
       }
       let status = item.switchStatus == "Y" ? "N" : "Y";

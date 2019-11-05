@@ -15,14 +15,14 @@
         class="list-group"
         ghost-class="ghost"
         @start="dragging = true"
-        @end="checkMove()"
+        @change="checkMove()"
       >
         <div class="list-group-item" v-for="item in list" :key="item.roomId">
           {{ item.remark }}
           <div style="float: right">
             <div
-              style="color: teal"
-              @click="changeMode(item.houseRoomInfo);"
+              style="color: teal; height: 100%"
+              @click.stop="changeMode(item.houseRoomInfo);"
             >{{modelTypeEnum(item.houseRoomInfo)}}</div>
             <div
               @click="goModeDetail(item.houseRoomInfo)"
@@ -166,13 +166,13 @@ export default {
       if (child.modelType == 0) {
         return "自由模式";
       } else if (child.modelType == 1) {
-        return "编程模式";
+        return child.modelName;
       }
     },
         // 变更模式
     async changeMode(item) {
       if(this.houseControlInfo.controlMode == 0) {
-        global.toast("分户住宅不能变更模式");
+        global.toast("集中户住宅不能变更模式");
         return;  
       }
       console.log(item);
@@ -209,6 +209,12 @@ export default {
               url: `app/heating/residentApp/applyModel/${item.roomId}/${element.modelId}`,
               method: "get"
             });
+            self.list.forEach(n=>{
+              if(n.roomId == item.roomId) {
+                n.houseRoomInfo.modelId = element.modelId
+                n.houseRoomInfo.modelName = element.modelName
+              }
+            })
             console.log(element);
           }
         });
