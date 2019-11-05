@@ -339,7 +339,7 @@ export default {
         global.toast("请先开机");
         return;     
       }
-      if (par.houseControlInfo.controlMode == 1) {
+      if (par.houseControlInfo.controlMode == 0) {
         global.toast("分户住宅不能操控温度");
         return;
       }
@@ -362,7 +362,7 @@ export default {
       }
     },
     async changeSwitch(item, par) {
-      if (par.houseControlInfo.controlMode == 1) {
+      if (par.houseControlInfo.controlMode == 0) {
         global.toast("分户住宅不能操控开关");
         return;
       }

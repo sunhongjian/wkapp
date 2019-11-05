@@ -171,7 +171,7 @@ export default {
     },
         // 变更模式
     async changeMode(item) {
-      if(this.houseControlInfo.controlMode == 1) {
+      if(this.houseControlInfo.controlMode == 0) {
         global.toast("分户住宅不能变更模式");
         return;  
       }
