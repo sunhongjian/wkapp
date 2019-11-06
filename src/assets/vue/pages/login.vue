@@ -164,8 +164,9 @@ export default {
   justify-content: center;
 }
 .login-box p {
-  color: #000;
-  font-size: 16px;
+  color: teal;
+  font-size: 18px;
+  text-align: center;
 }
 .login-box div {
   width: 120px;
