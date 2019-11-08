@@ -579,6 +579,7 @@ export default {
   width: 35px;
   height: 35px;
   line-height: 35px;
+  margin: 0 auto;
 }
 .flex > div {
   flex: 1;
