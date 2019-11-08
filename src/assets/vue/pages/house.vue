@@ -26,7 +26,7 @@
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <!-- <div class="sub-title">{{item.houseControlInfo.address}}</div> -->
               <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
-              <div @click="initData()" class="house-refresh"></div>
+              <div @click="initData(true)" class="house-refresh"></div>
               <f7-button class="moshipaixu" @click="modeAndSort(item)" fill round>模式和排序</f7-button>
             </div>
             <div style="padding: 10px" class="group">
@@ -51,7 +51,7 @@
                       <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
                         <img :src="getImgUrl(child.appIcon)" alt />
                       </span>
-                      <span style="font-size: 18px; color: #5a2005">{{child.setTemp}}°</span>
+                      <span style="font-size: 18px; color: teal">{{child.setTemp}}°</span>
                     </div>
                   </div>
                   <div class="realTemp">{{child.realTemp}}°</div>
@@ -377,7 +377,7 @@ export default {
         item.switchStatus = item.switchStatus == "Y" ? "N" : "Y";
       }
     },
-    async initData(event, done) {
+    async initData(spec) {
       // if (document.querySelector(".swiper-container")) {
       //   var mySwiper = document.querySelector(".swiper-container").swiper;
       //   mySwiper.destroy();
@@ -414,7 +414,7 @@ export default {
         //   });
         // });
         this.$nextTick(function() {
-          if (this.list.length == 0) {
+          if (this.list.length == 0 || spec) {
             return;
           }
           if (!this.firstInit) {
@@ -435,10 +435,6 @@ export default {
           swiper.init();
           this.firstInit = false;
         });
-      }
-      if (done) {
-        global.toast("刷新成功");
-        done();
       }
     }
   }
@@ -499,7 +495,7 @@ export default {
 }
 .house-refresh {
   position: absolute;
-  top: 80px;
+  top: 60px;
   color: teal;
   font-size: 40px;
   right: 20px !important;
@@ -640,5 +636,6 @@ export default {
   font-size: 35px;
   font-weight: bold;
   margin-top: 10px;
+  color: teal;
 }
 </style>
