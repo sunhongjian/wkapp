@@ -15,6 +15,9 @@
     },
     "cordova-android-support-gradle-release": {
       "PACKAGE_NAME": "com.example.template"
+    },
+    "cordova-hot-code-push-plugin": {
+      "PACKAGE_NAME": "com.example.template"
     }
   },
   "dependent_plugins": {}

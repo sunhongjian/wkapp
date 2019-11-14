@@ -164,7 +164,7 @@ export default {
   justify-content: center;
 }
 .login-box p {
-  color: teal;
+  color: #000;
   font-size: 18px;
   text-align: center;
 }
