@@ -7,7 +7,18 @@
       <div class="swiper-wrapper">
         <!-- Slides -->
         <div v-if="list.length == 0 && !loadingSwitch" class="add-block">
-          <i @click="add" style="color: teal" class="f7-icons">add</i>
+          <div class="main-nav-add">
+            <div class="main-nav-sett">
+              <f7-link href="/person/">
+                <i class="f7-icons">settings</i>
+              </f7-link>
+            </div>
+            <div class="main-nav-title">成诺智家</div>
+            <div class="main-nav-list">
+              <i @click="goDetail()" class="f7-icons">list</i>
+            </div>
+          </div>
+          <i @click="add" style="color: teal" class="f7-icons add-icon">add</i>
         </div>
         <div class="swiper-slide" v-for="item in list">
           <div class="bg-white">
@@ -30,7 +41,11 @@
               <f7-button class="moshipaixu" @click="modeAndSort(item)" fill round>模式和排序</f7-button>
             </div>
             <div style="padding: 10px" class="group">
-              <div class="item" v-for="child in item.houseRoomInfo" :class="{'gray-theme': child.switchStatus == 'N'}">
+              <div
+                class="item"
+                v-for="child in item.houseRoomInfo"
+                :class="{'gray-theme': child.switchStatus == 'N'}"
+              >
                 <div class="item-inner-content">
                   <div style="text-align: center; margin-bottom: 5px">
                     <div>
@@ -335,9 +350,9 @@ export default {
     },
     // 温度调控
     async editTemp(item, val, par) {
-      if(item.switchStatus == 'N') {
+      if (item.switchStatus == "N") {
         global.toast("请先开机");
-        return;     
+        return;
       }
       if (par.houseControlInfo.controlMode == 0) {
         global.toast("集中户住宅不能操控温度");
@@ -462,7 +477,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.add-block i {
+.add-block .add-icon {
   font-size: 50px;
   display: block;
   border: 3px solid teal;
@@ -502,7 +517,7 @@ export default {
   width: 35px;
   height: 35px;
   background-size: 35px auto;
-  background-image: url("../../images/refresh.png")
+  background-image: url("../../images/refresh.png");
 }
 .icon-add {
   width: 32px;
@@ -605,6 +620,14 @@ export default {
   font-size: 12px;
   margin-top: 10px;
   padding-left: 20px;
+}
+.main-nav-add {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
 }
 .main-nav {
   display: flex;
