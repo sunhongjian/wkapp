@@ -71,7 +71,7 @@ export default {
       popupOpenedRe: false,
       popupOpened: false,
       loginData: {
-        phoneNo: "",
+        phoneNo: window.localStorage.getItem('phoneNo'),
         password: ""
       }
     };
@@ -95,6 +95,7 @@ export default {
           this.$f7.loginScreen.close();
           this.LOGIN_SUCCESS(true);
           // this.$f7router.navigate("/myHome/");
+          window.localStorage.setItem("phoneNo", this.loginData.phoneNo);
           window.localStorage.setItem("appUserId", res.data.data.appUserId);
           window.localStorage.setItem("token", res.data.data.token);
         }
