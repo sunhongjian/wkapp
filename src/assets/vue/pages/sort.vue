@@ -12,12 +12,14 @@
       <draggable
         :list="list"
         :disabled="!enabled"
+        handle=".handle"
         class="list-group"
         ghost-class="ghost"
         @start="dragging = true"
         @change="checkMove()"
       >
         <div class="list-group-item" v-for="item in list" :key="item.roomId">
+          <i class="fa fa-arrows-alt handle" style="color: teal; font-size: 16px; margin-right: 10px"></i>
           {{ item.remark }}
           <div style="float: right">
             <div

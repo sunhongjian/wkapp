@@ -581,10 +581,9 @@ export default {
 }
 .item-inner-content {
   margin: 10px;
-  height: 150px;
   border-radius: 10px;
   box-shadow: #f6f6f6 2px 2px 3px 1px;
-  padding: 10px;
+  padding: 20px 10px;
 }
 .icon-round {
   width: 35px;
@@ -658,7 +657,7 @@ export default {
   text-align: center;
   font-size: 35px;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 30px;
   color: teal;
 }
 </style>
