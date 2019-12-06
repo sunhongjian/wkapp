@@ -492,17 +492,17 @@ export default {
 }
 .icon-home {
   display: inline-block;
-  width: 27px;
-  height: 27px;
+  width: 30px;
+  height: 30px;
   background-image: url("../../images/sy1.png");
-  background-size: 27px auto;
+  background-size: 30px auto;
   vertical-align: bottom;
   background-repeat: no-repeat;
 }
 .icon-chosen {
   display: inline-block;
-  width: 27px;
-  height: 27px;
+  width: 30px;
+  height: 30px;
   vertical-align: bottom;
 }
 .icon-chosen img {
@@ -657,7 +657,7 @@ export default {
   text-align: center;
   font-size: 35px;
   font-weight: bold;
-  margin-top: 30px;
+  margin-top: 20px;
   color: teal;
 }
 </style>
