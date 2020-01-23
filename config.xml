@@ -68,10 +68,10 @@
         <icon height="1024" src="res/icons/1024x1024.png" width="1024" />
     </platform>
     <allow-navigation href="*" />
-    <engine name="browser" spec="^6.0.0" />
-    <engine name="android" spec="^8.1.0" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-splashscreen" spec="~5.0.3" />
     <plugin name="cordova-android-support-gradle-release" spec="~3.0.1" />
     <plugin name="cordova-hot-code-push-plugin" spec="~1.5.3" />
+    <engine name="browser" spec="^6.0.0" />
+    <engine name="android" spec="^8.1.0" />
 </widget>

@@ -200,7 +200,8 @@ export default {
       popupOpened: false,
       popupRoom: false,
       popupSort: false,
-      modeDetailData: {} // 温度详情
+      modeDetailData: {}, // 温度详情
+      activeIndex: 0
     };
   },
   components: {
@@ -400,8 +401,15 @@ export default {
 
       this.loadingSwitch = true;
       let appUserId = window.localStorage.getItem("appUserId");
+      // 刷新获取houseMgtId
+      let url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
+      if(spec) {
+        alert(this.activeIndex)
+        let houseMgtId = this.list[this.activeIndex].houseControlInfo.houseMgtId
+        url= `app/heating/residentApp/getHouseAndRoomList/${appUserId}?houseMgtId=${houseMgtId}`
+      }
       let res = await this.$axios({
-        url: `app/heating/residentApp/getHouseAndRoomList/${appUserId}`,
+        url,
         method: "get"
       });
       this.loadingSwitch = false;
@@ -428,6 +436,7 @@ export default {
         //     n.modelName = name;
         //   });
         // });
+        let self = this
         this.$nextTick(function() {
           if (this.list.length == 0 || spec) {
             return;
@@ -435,20 +444,26 @@ export default {
           if (!this.firstInit) {
             var mySwiper = document.querySelector(".swiper-container").swiper;
             mySwiper.destroy();
+          } else {
+            var swiper = new Swiper(".swiper-container", {
+              on:{
+                slideChange: function(){
+                  self.activeIndex = swiper.activeIndex
+                },
+              },
+              renderBullet: function(index, className) {
+                return (
+                  '<span class="' + className + '">' + (index + 1) + "</span>"
+                );
+              },
+              pagination: {
+                el: ".swiper-pagination",
+                type: "bullets"
+              }
+            });
+            swiper.init();
+            this.firstInit = false;
           }
-          var swiper = new Swiper(".swiper-container", {
-            renderBullet: function(index, className) {
-              return (
-                '<span class="' + className + '">' + (index + 1) + "</span>"
-              );
-            },
-            pagination: {
-              el: ".swiper-pagination",
-              type: "bullets"
-            }
-          });
-          swiper.init();
-          this.firstInit = false;
         });
       }
     }
