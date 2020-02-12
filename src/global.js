@@ -1,8 +1,8 @@
 import Vue from 'vue';
-export default new Vue({ 
+export default new Vue({
   data() {
     return {
-      host:'http://47.93.102.21:8090',//测式环境
+      host:'http://123.57.62.19:8090',//测式环境
       contextPath:'/heating/residentApp',
       publicKey: "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIRhQFF/Aa9Jad5DJliqEKj3jYoSVBY3OmuLoE4WqzZB6BRDVHeMhEDaNvYNIJZAehLoOkJBwjnGpSnUiRFUXlMCAwEAAQ=="
     }

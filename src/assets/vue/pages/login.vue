@@ -3,7 +3,7 @@
     <f7-page login-screen color-theme="teal">
       <f7-block class="login-box">
         <div>
-          <img src="../../images/icon.jpeg" alt />
+          <img src="../../images/icon.png" alt />
           <p>成诺智家</p>
         </div>
       </f7-block>

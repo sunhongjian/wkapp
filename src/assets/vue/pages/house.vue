@@ -48,8 +48,8 @@
               >
                 <div class="item-inner-content">
                   <div style="text-align: center; margin-bottom: 5px">
-                    <div>
-                      <span style="font-size: 18px; color:teal">
+                    <div style="display: flex">
+                      <span style="font-size: 15px; color:teal; flex: 1" :style="{fontSize: child.remark.length> 4 ? '12px' : '15px'}">
                         <span
                           v-if="!child.showEditRemark"
                           @click="editRemark(child,item.houseRoomInfo)"
@@ -66,7 +66,7 @@
                       <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
                         <img :src="getImgUrl(child.appIcon)" alt />
                       </span>
-                      <span style="font-size: 18px; color: teal">{{child.setTemp}}°</span>
+                      <span style="font-size: 18px; color: teal; flex: 1">{{child.setTemp}}°</span>
                     </div>
                   </div>
                   <div class="realTemp">{{child.realTemp}}°</div>
