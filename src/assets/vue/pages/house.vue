@@ -404,7 +404,6 @@ export default {
       // 刷新获取houseMgtId
       let url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
       if(spec) {
-        alert(this.activeIndex)
         let houseMgtId = this.list[this.activeIndex].houseControlInfo.houseMgtId
         url= `app/heating/residentApp/getHouseAndRoomList/${appUserId}?houseMgtId=${houseMgtId}`
       }
