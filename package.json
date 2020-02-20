@@ -51,7 +51,7 @@
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "^6.0.0",
     "cordova-hot-code-push-plugin": "^1.5.3",
-    "cordova-ios": "^5.1.1",
+    "cordova-ios": "^4.5.5",
     "cordova-plugin-splashscreen": "^5.0.3",
     "fastclick": "^1.0.6",
     "framework7": "^4.4.0",
@@ -63,7 +63,8 @@
     "swiper": "^4.5.0",
     "vue": "^2.6.10",
     "vuedraggable": "^2.23.2",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.1",
+    "cordova-plugin-whitelist": "1"
   },
   "cordova": {
     "plugins": {
@@ -76,7 +77,8 @@
     },
     "platforms": [
       "browser",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

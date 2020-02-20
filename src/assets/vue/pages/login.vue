@@ -170,7 +170,7 @@ export default {
   text-align: center;
 }
 .login-box div {
-  width: 120px;
+  width: 80px;
 }
 .login-box img {
   width: 100%;

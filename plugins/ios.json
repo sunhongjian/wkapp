@@ -8,16 +8,16 @@
   },
   "installed_plugins": {
     "cordova-android-support-gradle-release": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+      "PACKAGE_NAME": "com.wulianzhijia"
     },
     "cordova-hot-code-push-plugin": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+      "PACKAGE_NAME": "com.wulianzhijia"
     },
     "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+      "PACKAGE_NAME": "com.wulianzhijia"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+      "PACKAGE_NAME": "com.wulianzhijia"
     }
   },
   "dependent_plugins": {}
