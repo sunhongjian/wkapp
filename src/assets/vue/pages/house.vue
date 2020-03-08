@@ -69,6 +69,14 @@
                       <span style="font-size: 18px; color: teal; flex: 1">{{child.setTemp}}°</span>
                     </div>
                   </div>
+                  <f7-button
+                      raised
+                      round
+                      small
+                      class="icon-round-room room-refresh"
+                      @click="refreshRoom(child)"
+                    >
+                    </f7-button>
                   <div class="realTemp">{{child.realTemp}}°</div>
                   <div class="display-flex" style="margin-top: 5px">
                     <!-- <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div> -->
@@ -201,7 +209,9 @@ export default {
       popupRoom: false,
       popupSort: false,
       modeDetailData: {}, // 温度详情
-      activeIndex: 0
+      activeIndex: 0,
+      tempVal: 0,
+      canAction: true
     };
   },
   components: {
@@ -231,9 +241,11 @@ export default {
       this.$refs.manage.initData();
       this.popupOpened = true;
     },
-    closeHandle() {
+    closeHandle(idx) {
       this.popupOpened = false;
-      this.initData();
+      var mySwiper = document.querySelector(".swiper-container").swiper;
+      mySwiper.slideTo(idx, 0, false);
+      // this.initData();
     },
     closeHandleSort() {
       this.popupSort = false;
@@ -247,6 +259,32 @@ export default {
     getImgUrl(value) {
       let temp = "imgsrc" + value;
       return this[temp];
+    },
+    // 刷新房间
+    async refreshRoom(item) {
+      
+        let res = await this.$axios({
+          url: `app/heating/residentApp/getLastValue/${item.roomId}`,
+          method: "get",
+        });
+        if(res.data.code == '200') {
+        let list = this.list
+        list.forEach((n,idx) => {
+          n.houseRoomInfo.forEach((child, cidx) => {
+            if(child.roomId == item.roomId) {
+              for(let key in child) {
+                child[key] = res.data.data[key]
+              }
+            }
+          })
+        })
+        this.list = [...list]
+        global.toast('房间数据刷新成功');
+        } else {
+          global.toast('刷新异常');
+        }
+
+
     },
     editRemark(item, data) {
       // 关闭其他的输入框
@@ -332,11 +370,11 @@ export default {
     async modeAndSort(item) {
       this.loadingSwitch = true;
       let res = await this.$axios({
-        url: `app/heating/residentApp/getRoomHeatOrder/${item.houseControlInfo.houseMgtId}`,
+        url: `app/heating/residentApp/getRoomHeatOrder/${item.houseControlInfo.houseMgtId}/${window.localStorage.getItem("appUserId")}`,
         method: "get"
       });
       this.loadingSwitch = false;
-      let temp = res.data.data;
+      let temp = res.data.data[0].roomList;
       item.houseRoomInfo.forEach(n => {
         temp.forEach(child => {
           if (n.roomId == child.roomId) {
@@ -351,6 +389,19 @@ export default {
     },
     // 温度调控
     async editTemp(item, val, par) {
+      if(this.canAction) {
+        this.tempVal = val
+        this.canAction = false
+         setTimeout(()=> {
+           this.canAction = true
+           if(this.tempVal !== 0) {
+             this.editTemp(item, this.tempVal, par)
+           }         
+         }, 3000)
+      } else {
+        this.tempVal = Number(this.tempVal) + Number(val)
+        return false
+      }
       if (item.switchStatus == "N") {
         global.toast("请先开机");
         return;
@@ -359,22 +410,24 @@ export default {
         global.toast("集中户住宅不能操控温度");
         return;
       }
-      if (item.setTemp + Number(val) > 35) {
+      if (item.setTemp + Number(this.tempVal) > 35) {
         global.toast("温度不能超过35度");
         return;
       }
-      if (item.setTemp + Number(val) < 5) {
+      if (item.setTemp + Number(this.tempVal) < 5) {
         global.toast("温度不能低于5度");
         return;
       }
       let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${
           item.roomId
-        }/${item.setTemp + Number(val)}/${item.switchStatus}`,
+        }/${item.setTemp + Number(this.tempVal)}/${item.switchStatus}`,
         method: "get"
       });
       if (res.data.code == 200) {
-        item.setTemp = item.setTemp + Number(val);
+        item.setTemp = item.setTemp + Number(this.tempVal);
+        this.tempVal = 0;
+        global.toast("温度设置成功");
       }
     },
     async changeSwitch(item, par) {
@@ -413,7 +466,8 @@ export default {
       });
       this.loadingSwitch = false;
       if (res.data.code == 200) {
-        this.list = res.data.data;
+        // 取前5个
+        this.list = res.data.data.splice(0,5);
         this.list.forEach(n => {
           n.houseRoomInfo.forEach(c => {
             c.showEditRemark = false;
@@ -533,6 +587,19 @@ export default {
   background-size: 35px auto;
   background-image: url("../../images/refresh.png");
 }
+.room-refresh {
+  position: absolute;
+  top: 60px;
+  color: teal;
+  font-size: 40px;
+  right: 20px !important;
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: 26px auto;
+  background-position: 4px;
+  background-image: url("../../images/refresh.png"); 
+}
 .icon-add {
   width: 32px;
   height: 32px;
@@ -598,12 +665,18 @@ export default {
   border-radius: 10px;
   box-shadow: #f6f6f6 2px 2px 3px 1px;
   padding: 20px 10px;
+  position: relative;
 }
 .icon-round {
   width: 35px;
   height: 35px;
   line-height: 35px;
   margin: 0 auto;
+}
+.icon-round-room {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
 }
 .flex > div {
   flex: 1;

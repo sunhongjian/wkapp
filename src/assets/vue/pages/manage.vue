@@ -6,7 +6,7 @@
       <i @click="add" class="f7-icons add-icon">add</i>
     </div>
     <div class="list-wrapper">
-      <div v-for="item in list" :key="item.houseMgtId" class="list-item" @click="goDetail()">
+      <div v-for="(item,idx) in list" :key="item.houseMgtId" class="list-item" @click="goDetail(idx)">
         <div class="left-content">
           <div class="title">{{item.houseName}} <i @click.stop="editHouseName(item.controlId)" class="f7-icons">edit</i></div>
           <div class="sub-title">{{item.address}}</div>
@@ -136,8 +136,8 @@ export default {
         this.initData();
       });     
     },
-    goDetail() {
-      this.$emit("closeHandle");
+    goDetail(idx) {
+      this.$emit("closeHandle", idx);
     },
     async handleSub(item) {
       this.subData = item
