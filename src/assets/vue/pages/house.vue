@@ -37,7 +37,7 @@
               <div class="title">{{item.houseControlInfo.houseName}}</div>
               <!-- <div class="sub-title">{{item.houseControlInfo.address}}</div> -->
               <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
-              <div @click="initData(true)" class="house-refresh"></div>
+              <!-- <div @click="initData(true)" class="house-refresh"></div> -->
               <f7-button class="moshipaixu" @click="modeAndSort(item)" fill round>模式和排序</f7-button>
             </div>
             <div style="padding: 10px" class="group">
@@ -588,16 +588,18 @@ export default {
   background-image: url("../../images/refresh.png");
 }
 .room-refresh {
+  display: block;
   position: absolute;
-  top: 60px;
+  top: 78px;
   color: teal;
   font-size: 40px;
   right: 20px !important;
-  width: 35px;
-  height: 35px;
+  width: 20px !important;
+  height: 32px !important;
   background-repeat: no-repeat;
-  background-size: 26px auto;
-  background-position: 4px;
+  background-size: 20px auto;
+  background-position: 6px;
+  padding: 0 !important;
   background-image: url("../../images/refresh.png"); 
 }
 .icon-add {

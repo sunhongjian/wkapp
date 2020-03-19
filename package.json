@@ -53,6 +53,7 @@
     "cordova-hot-code-push-plugin": "^1.5.3",
     "cordova-ios": "^4.5.5",
     "cordova-plugin-splashscreen": "^5.0.3",
+    "cordova-plugin-whitelist": "1",
     "fastclick": "^1.0.6",
     "framework7": "^4.4.0",
     "framework7-icons": "^2.3.1",
@@ -63,8 +64,7 @@
     "swiper": "^4.5.0",
     "vue": "^2.6.10",
     "vuedraggable": "^2.23.2",
-    "vuex": "^3.1.1",
-    "cordova-plugin-whitelist": "1"
+    "vuex": "^3.1.1"
   },
   "cordova": {
     "plugins": {
