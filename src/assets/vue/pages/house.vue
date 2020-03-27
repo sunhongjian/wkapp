@@ -390,16 +390,16 @@ export default {
     // 温度调控
     async editTemp(item, val, par) {
       if(this.canAction) {
-        this.tempVal = val
+        item.tempVal = val
         this.canAction = false
          setTimeout(()=> {
            this.canAction = true
-           if(this.tempVal !== 0) {
-             this.editTemp(item, this.tempVal, par)
+           if(item.tempVal !== 0) {
+             this.editTemp(item, item.tempVal, par)
            }         
          }, 3000)
       } else {
-        this.tempVal = Number(this.tempVal) + Number(val)
+        item.tempVal = Number(item.tempVal) + Number(val)
         return false
       }
       if (item.switchStatus == "N") {
@@ -410,23 +410,23 @@ export default {
         global.toast("集中户住宅不能操控温度");
         return;
       }
-      if (item.setTemp + Number(this.tempVal) > 35) {
+      if (item.setTemp + Number(item.tempVal) > 35) {
         global.toast("温度不能超过35度");
         return;
       }
-      if (item.setTemp + Number(this.tempVal) < 5) {
+      if (item.setTemp + Number(item.tempVal) < 5) {
         global.toast("温度不能低于5度");
         return;
       }
       let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${
           item.roomId
-        }/${item.setTemp + Number(this.tempVal)}/${item.switchStatus}`,
+        }/${item.setTemp + Number(item.tempVal)}/${item.switchStatus}`,
         method: "get"
       });
       if (res.data.code == 200) {
-        item.setTemp = item.setTemp + Number(this.tempVal);
-        this.tempVal = 0;
+        item.setTemp = item.setTemp + Number(item.tempVal);
+        item.tempVal = 0;
         global.toast("温度设置成功");
       }
     },
