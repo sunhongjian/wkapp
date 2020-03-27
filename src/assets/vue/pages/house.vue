@@ -388,20 +388,26 @@ export default {
       this.popupSort = true;
     },
     // 温度调控
-    async editTemp(item, val, par) {
+    editTemp(item, val, par) {
+      // 三秒发一次请求
+
       if(this.canAction) {
         item.tempVal = val
         this.canAction = false
          setTimeout(()=> {
            this.canAction = true
            if(item.tempVal !== 0) {
-             this.editTemp(item, item.tempVal, par)
+             this.editTempTrue(item, item.tempVal, par)
            }         
          }, 3000)
       } else {
         item.tempVal = Number(item.tempVal) + Number(val)
         return false
       }
+    },
+    async editTempTrue(item, val, par) {
+      console.log(item)
+      // 三秒发一次请求
       if (item.switchStatus == "N") {
         global.toast("请先开机");
         return;
