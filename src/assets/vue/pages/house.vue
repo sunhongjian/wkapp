@@ -211,7 +211,8 @@ export default {
       modeDetailData: {}, // 温度详情
       activeIndex: 0,
       tempVal: 0,
-      canAction: true
+      canAction: true,
+      canActionRefresh: true
     };
   },
   components: {
@@ -261,8 +262,17 @@ export default {
       return this[temp];
     },
     // 刷新房间
-    async refreshRoom(item) {
-      
+    refreshRoom(item) {
+      if(this.canActionRefresh) {
+        this.canActionRefresh = false
+         setTimeout(()=> {
+           this.canActionRefresh = true
+             this.refreshRoomTrue(item)  
+         }, 2000)
+      }
+    },
+    async refreshRoomTrue(item) {
+        // 增加延迟   
         let res = await this.$axios({
           url: `app/heating/residentApp/getLastValue/${item.roomId}`,
           method: "get",
@@ -389,7 +399,7 @@ export default {
     },
     // 温度调控
     editTemp(item, val, par) {
-      // 三秒发一次请求
+      // 三秒发一次真实请求
 
       if(this.canAction) {
         item.tempVal = val
@@ -399,14 +409,17 @@ export default {
            if(item.tempVal !== 0) {
              this.editTempTrue(item, item.tempVal, par)
            }         
-         }, 3000)
+         }, 2000)
       } else {
         item.tempVal = Number(item.tempVal) + Number(val)
         return false
       }
     },
     async editTempTrue(item, val, par) {
-      console.log(item)
+      if(item.modelId != "") {
+        global.toast("切换到自由模式再调整温度");
+        return;
+      }
       // 三秒发一次请求
       if (item.switchStatus == "N") {
         global.toast("请先开机");
