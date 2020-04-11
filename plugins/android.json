@@ -9,13 +9,13 @@
   "installed_plugins": {
     "cordova-android-support-gradle-release": {
       "ANDROID_SUPPORT_VERSION": "27.+",
-      "PACKAGE_NAME": "com.qiaokong"
+      "PACKAGE_NAME": "com.wulianzhijia"
     },
     "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.qiaokong"
+      "PACKAGE_NAME": "com.wulianzhijia"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.qiaokong"
+      "PACKAGE_NAME": "com.wulianzhijia"
     }
   },
   "dependent_plugins": {}
