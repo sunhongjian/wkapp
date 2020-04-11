@@ -47,9 +47,9 @@
                 :class="{'gray-theme': child.switchStatus == 'N'}"
               >
                 <div class="item-inner-content">
-                  <div style="text-align: center; margin-bottom: 5px">
-                    <div style="display: flex">
-                      <span style="font-size: 15px; color:teal; flex: 1" :style="{fontSize: child.remark.length> 4 ? '12px' : '15px'}">
+                  <div style="text-align: center; margin-bottom: 5px;">
+                    <div style="display: flex; height: 32px; overflow:hidden">
+                      <span style="font-size: 15px; color:teal; flex: 1" :style="{fontSize: child.remark.length> 2 ? '12px' : '15px'}">
                         <span
                           v-if="!child.showEditRemark"
                           @click="editRemark(child,item.houseRoomInfo)"
@@ -93,6 +93,7 @@
                         round
                         small
                         class="icon-round"
+                        style="float: left"
                         @click="editTemp(child,'-1', item)"
                       >
                         <div class="icon-add"></div>
@@ -115,6 +116,7 @@
                         round
                         small
                         class="icon-round"
+                        style="float: right"
                         @click="changeSwitch(child, item)"
                       >
                         <div
@@ -250,7 +252,7 @@ export default {
     },
     closeHandleSort() {
       this.popupSort = false;
-      this.initData();
+      this.initData(true);
     },
     // 选择图标
     showIconChose(item) {
@@ -612,7 +614,7 @@ export default {
   top: 78px;
   color: teal;
   font-size: 40px;
-  right: 20px !important;
+  right: 13px !important;
   width: 20px !important;
   height: 32px !important;
   background-repeat: no-repeat;

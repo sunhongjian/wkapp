@@ -2,7 +2,7 @@
   <f7-page>
     <f7-navbar title="模式和排序">
       <f7-nav-right>
-        <f7-link popup-close>关闭</f7-link>
+        <f7-link  @click="closeHandle">关闭</f7-link>
       </f7-nav-right>
     </f7-navbar>
 
@@ -163,6 +163,9 @@ export default {
     }
   },
   methods: {
+    closeHandle() {
+      this.$emit('closeHandle')
+    },
     modelTypeEnum(child) {
       console.log(child)
       if (child.modelType == 0) {
