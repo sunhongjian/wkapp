@@ -380,29 +380,54 @@ export default {
     },
     // 模式和排序
     async modeAndSort(item) {
+      
       this.loadingSwitch = true;
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomHeatOrder/${item.houseControlInfo.houseMgtId}/${window.localStorage.getItem("appUserId")}`,
         method: "get"
       });
       this.loadingSwitch = false;
-      let temp = res.data.data[0].roomList;
+      let temp = res.data.data;
       item.houseRoomInfo.forEach(n => {
         temp.forEach(child => {
-          if (n.roomId == child.roomId) {
-            child.houseRoomInfo = n;
-          }
+          child.roomList.forEach(room => {
+            if (n.roomId == room.roomId) {
+              room.houseRoomInfo = n;
+            }
+          })
         });
       });
+      console.log('数据', temp)
+      this.$refs.sort.showSwitch = 0;
       this.$refs.sort.list = temp;
-      console.log(temp);
       this.$refs.sort.houseControlInfo = item.houseControlInfo;
       this.popupSort = true;
     },
     // 温度调控
     editTemp(item, val, par) {
+      if(item.modelId != "") {
+        global.toast("切换到自由模式再调整温度");
+        return;
+      }
+      // 三秒发一次请求
+      if (item.switchStatus == "N") {
+        global.toast("请先开机");
+        return;
+      }
+      if (par.houseControlInfo.controlMode == 0) {
+        global.toast("集中户住宅不能操控温度");
+        return;
+      }
+      if (item.setTemp + Number(val) > 35 && Number(val) > 0) {
+        global.toast("温度不能超过35度");
+        return;
+      }
+      if (item.setTemp + Number(val) < 5&& Number(val) < 0) {
+        global.toast("温度不能低于5度");
+        return;
+      }
       // 三秒发一次真实请求
-
+      item.setTemp = item.setTemp + Number(val);
       if(this.canAction) {
         item.tempVal = val
         this.canAction = false
@@ -418,35 +443,14 @@ export default {
       }
     },
     async editTempTrue(item, val, par) {
-      if(item.modelId != "") {
-        global.toast("切换到自由模式再调整温度");
-        return;
-      }
-      // 三秒发一次请求
-      if (item.switchStatus == "N") {
-        global.toast("请先开机");
-        return;
-      }
-      if (par.houseControlInfo.controlMode == 0) {
-        global.toast("集中户住宅不能操控温度");
-        return;
-      }
-      if (item.setTemp + Number(item.tempVal) > 35) {
-        global.toast("温度不能超过35度");
-        return;
-      }
-      if (item.setTemp + Number(item.tempVal) < 5) {
-        global.toast("温度不能低于5度");
-        return;
-      }
       let res = await this.$axios({
         url: `app/heating/residentApp/setTempSwitch/${
           item.roomId
-        }/${item.setTemp + Number(item.tempVal)}/${item.switchStatus}`,
+        }/${item.setTemp}/${item.switchStatus}`,
         method: "get"
       });
       if (res.data.code == 200) {
-        item.setTemp = item.setTemp + Number(item.tempVal);
+        // item.setTemp = item.setTemp + Number(item.tempVal);
         item.tempVal = 0;
         global.toast("温度设置成功");
       }

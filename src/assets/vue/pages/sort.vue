@@ -2,44 +2,118 @@
   <f7-page>
     <f7-navbar title="模式和排序">
       <f7-nav-right>
-        <f7-link  @click="closeHandle">关闭</f7-link>
+        <f7-link @click="closeHandle">关闭</f7-link>
       </f7-nav-right>
     </f7-navbar>
-
-    <div class="col-6">
-      <h5 style="padding-left: 10px">提示: 升温顺序(可以拖动进行调整)</h5>
-
-      <draggable
-        :list="list"
-        :disabled="!enabled"
-        handle=".handle"
-        class="list-group"
-        ghost-class="ghost"
-        @start="dragging = true"
-        @change="checkMove()"
+    <f7-toolbar tabbar bottom>
+    <f7-link :class="{ active: index == showSwitch }"
+    v-for="(item, index) in list" :key="index" :tab-link="`#tab-${index}`" @click="switchTab(index)">{{item.name}}</f7-link>
+  </f7-toolbar>
+  <f7-tabs>
+      <div
+        v-for="(room, index) in list"
+        :key="index"
+        :id="`#tab-${index}`"
+        class="page-content"
+        v-show="index == showSwitch"
       >
-        <div class="list-group-item" v-for="item in list" :key="item.roomId">
-          <i class="fa fa-arrows-alt handle" style="color: teal; font-size: 16px; margin-right: 10px"></i>
-          {{ item.remark }}
-          <div style="float: right">
-            <div
-              style="color: teal; height: 100%"
-              @click.stop="changeMode(item.houseRoomInfo);"
-            >{{modelTypeEnum(item.houseRoomInfo)}}</div>
-            <div
-              @click="goModeDetail(item.houseRoomInfo)"
-              v-if="item.houseRoomInfo.modelType == 1"
-              class="icon-settings"
-            ></div>
-          </div>
-        </div>
-      </draggable>
+      <f7-block>
+
+            <h5 style="padding-left: 10px">提示: 升温顺序(可以拖动进行调整)</h5>
+            <draggable
+              :list="room.roomList"
+              :disabled="!enabled"
+              handle=".handle"
+              class="list-group"
+              ghost-class="ghost"
+              @start="dragging = true"
+              @change="checkMove()"
+            >
+              <div
+                class="list-group-item"
+                v-for="item in room.roomList"
+                :key="item.roomId"
+              >
+                <i
+                  class="fa fa-arrows-alt handle"
+                  style="color: teal; font-size: 16px; margin-right: 10px"
+                ></i>
+                {{ item.remark }}
+                <div style="float: right">
+                  <div
+                    style="color: teal; height: 100%"
+                    @click.stop="changeMode(item.houseRoomInfo)"
+                  >
+                    {{ modelTypeEnum(item.houseRoomInfo) }}
+                  </div>
+                  <div
+                    @click="goModeDetail(item.roomId)"
+                    v-if="item.houseRoomInfo && item.houseRoomInfo.modelType == 1"
+                    class="icon-settings"
+                  ></div>
+                </div>
+              </div>
+            </draggable> 
+      </f7-block>
     </div>
-    <f7-popup class="demo-popup" :opened="popupRoom" @popup:closed="popupRoom = false">
+      <!-- <f7-tab
+        v-for="(room, index) in list"
+        :key="index"
+        :id="`#tab-${index}`"
+        class="page-content"
+        :tab-active="index==0"
+      >
+        <f7-block>
+          <div class="col-6">
+            <h5 style="padding-left: 10px">提示: 升温顺序(可以拖动进行调整)</h5>
+
+            <draggable
+              :list="room.roomList"
+              :disabled="!enabled"
+              handle=".handle"
+              class="list-group"
+              ghost-class="ghost"
+              @start="dragging = true"
+              @change="checkMove()"
+            >
+              <div
+                class="list-group-item"
+                v-for="item in room.roomList"
+                :key="item.roomId"
+              >
+                <i
+                  class="fa fa-arrows-alt handle"
+                  style="color: teal; font-size: 16px; margin-right: 10px"
+                ></i>
+                {{ item.remark }}
+                <div style="float: right">
+                  <div
+                    style="color: teal; height: 100%"
+                    @click.stop="changeMode(item.houseRoomInfo)"
+                  >
+                    {{ modelTypeEnum(item.houseRoomInfo) }}
+                  </div>
+                  <div
+                    @click="goModeDetail(item.houseRoomInfo)"
+                    v-if="item.houseRoomInfo.modelType == 1"
+                    class="icon-settings"
+                  ></div>
+                </div>
+              </div>
+            </draggable>
+          </div>
+        </f7-block>
+    </f7-tab> -->
+  </f7-tabs>
+    <f7-popup
+      class="demo-popup"
+      :opened="popupRoom"
+      @popup:closed="popupRoom = false"
+    >
       <f7-page>
         <f7-navbar title="温控详情">
           <f7-nav-right>
-            <f7-link @click="popupRoom= false">关闭</f7-link>
+            <f7-link @click="popupRoom = false">关闭</f7-link>
           </f7-nav-right>
         </f7-navbar>
         <div>
@@ -50,9 +124,11 @@
                 <div class="item-content">
                   <div class="item-inner">
                     <div class="item-title-row">
-                      <div class="item-title">{{modeDetailData['time'+item]}}</div>
+                      <div class="item-title">
+                        {{ modeDetailData["time" + item] }}
+                      </div>
                       <div class="item-after">
-                        <span>{{modeDetailData['temp'+item]}}°</span>
+                        <span>{{ modeDetailData["temp" + item] }}°</span>
                         <span>
                           <f7-link
                             popover-open=".popover-menu"
@@ -64,7 +140,9 @@
                         </span>
                       </div>
                     </div>
-                    <div class="item-subtitle">{{modeDetailData['starttime'+item]}}</div>
+                    <div class="item-subtitle">
+                      {{ modeDetailData["starttime" + item] }}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -75,21 +153,29 @@
                 <div class="item-content">
                   <div class="item-inner">
                     <div class="item-title-row">
-                      <div class="item-title">{{modeDetailData['time'+Number(item+4)]}}</div>
+                      <div class="item-title">
+                        {{ modeDetailData["time" + Number(item + 4)] }}
+                      </div>
                       <div class="item-after">
-                        <span>{{modeDetailData['temp'+Number(item+4)]}}°</span>
+                        <span
+                          >{{
+                            modeDetailData["temp" + Number(item + 4)]
+                          }}°</span
+                        >
                         <span>
                           <f7-link
                             popover-open=".popover-menu"
                             v-if="modeDetailData.isEdit"
-                            @click="editDetail(Number(item+4))"
+                            @click="editDetail(Number(item + 4))"
                           >
                             <i style="color: teal;" class="f7-icons">edit</i>
                           </f7-link>
                         </span>
                       </div>
                     </div>
-                    <div class="item-subtitle">{{modeDetailData['starttime'+Number(item+4)]}}</div>
+                    <div class="item-subtitle">
+                      {{ modeDetailData["starttime" + Number(item + 4)] }}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -123,7 +209,13 @@
         ></f7-list-input>
       </f7-list>
       <div style="padding: 20px;">
-        <f7-button popover-close style="background: teal; color: #fff;" round @click="saveTemp">保存</f7-button>
+        <f7-button
+          popover-close
+          style="background: teal; color: #fff;"
+          round
+          @click="saveTemp"
+          >保存</f7-button
+        >
       </div>
     </f7-popover>
   </f7-page>
@@ -143,11 +235,11 @@ export default {
   },
   data() {
     return {
+      showSwitch: 0,
       enabled: true,
       popupRoom: false,
       modeDetailData: {},
-      list: [
-      ],
+      list: [],
       dragging: false,
       condition: {
         time: "",
@@ -157,36 +249,45 @@ export default {
       } // 暂存温度
     };
   },
+  created() {
+    window.y = this;
+  },
   computed: {
     draggingInfo() {
       return this.dragging ? "under drag" : "";
     }
   },
   methods: {
+    switchTab(value) {
+      this.showSwitch = value
+    },
     closeHandle() {
-      this.$emit('closeHandle')
+      this.$emit("closeHandle");
     },
     modelTypeEnum(child) {
-      console.log(child)
+      console.log(3333,child);
+      if (!child) {
+        return
+      }
       if (child.modelType == 0) {
         return "自由模式";
       } else if (child.modelType == 1) {
         return child.modelName;
       }
     },
-        // 变更模式
+    // 变更模式
     async changeMode(item) {
-      if(this.houseControlInfo.controlMode == 0) {
+      if (this.houseControlInfo.controlMode == 0) {
         global.toast("集中户住宅不能变更模式");
-        return;  
+        return;
       }
       console.log(item);
-      this.loadingSwitch = true
+      this.loadingSwitch = true;
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
         method: "get"
       });
-      this.loadingSwitch = false
+      this.loadingSwitch = false;
       let buttons = [];
       res.data.data.forEach(element => {
         const self = this;
@@ -211,15 +312,17 @@ export default {
               }
             }
             let res = await self.$axios({
-              url: `app/heating/residentApp/applyModel/${item.roomId}/${element.modelId}`,
+              url: `app/heating/residentApp/applyModel/${item.roomId}/${
+                element.modelId
+              }`,
               method: "get"
             });
-            self.list.forEach(n=>{
-              if(n.roomId == item.roomId) {
-                n.houseRoomInfo.modelId = element.modelId
-                n.houseRoomInfo.modelName = element.modelName
+            self.list.forEach(n => {
+              if (n.roomId == item.roomId) {
+                n.houseRoomInfo.modelId = element.modelId;
+                n.houseRoomInfo.modelName = element.modelName;
               }
-            })
+            });
             console.log(element);
           }
         });
@@ -234,7 +337,9 @@ export default {
               async onClick(val) {
                 if (item.modelType == 1) {
                   let resMode = await self.$axios({
-                    url: `app/heating/residentApp/changeRoomModel/${item.roomId}`,
+                    url: `app/heating/residentApp/changeRoomModel/${
+                      item.roomId
+                    }`,
                     method: "get"
                   });
                   if (resMode.data.code == 200) {
@@ -282,23 +387,23 @@ export default {
     },
     async checkMove(e) {
       this.dragging = false;
-      let temp = []
-      console.log(this.list)
-      this.list.forEach(n => {
-        temp.push ({
+      let temp = [];
+      console.log(this.list);
+      this.list[this.showSwitch].roomList.forEach(n => {
+        temp.push({
           heatOrder: n.heatOrder,
           remark: n.remark,
           roomId: n.roomId
-        })
-      })
+        });
+      });
       try {
-          let res = await this.$axios({
-            url: "app/heating/residentApp/modifyRoomHeatOrder",
-            method: "post",
-            data: temp
-          });
-          global.toast(res.data.info);
-        } catch (error) {}
+        let res = await this.$axios({
+          url: "app/heating/residentApp/modifyRoomHeatOrder",
+          method: "post",
+          data: temp
+        });
+        global.toast(res.data.info);
+      } catch (error) {}
     },
     editDetail(item) {
       this.condition.starttime = this.modeDetailData["starttime" + item];
@@ -326,11 +431,14 @@ export default {
         method: "post",
         data: this.modeDetailData
       });
-    },
+    }
   }
 };
 </script>
 <style scoped>
+.active {
+  color: #008080 !important;
+}
 .buttons {
   margin-top: 35px;
 }
