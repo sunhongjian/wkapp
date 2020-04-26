@@ -482,8 +482,8 @@ export default {
       // 刷新获取houseMgtId
       let url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
       if(spec) {
-        let houseMgtId = this.list[this.activeIndex].houseControlInfo.houseMgtId
-        url= `app/heating/residentApp/getHouseAndRoomList/${appUserId}?houseMgtId=${houseMgtId}`
+        // let houseMgtId = this.list[this.activeIndex].houseControlInfo.houseMgtId
+        url= `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
       }
       let res = await this.$axios({
         url,
