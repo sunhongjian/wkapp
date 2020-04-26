@@ -6,7 +6,7 @@
       <f7-list-item title="版本信息" link="/version/"></f7-list-item>
       <f7-list-item title="检查更新"></f7-list-item>
       <f7-list-item title="意见反馈"></f7-list-item>
-      <f7-list-item title="免责声明"></f7-list-item>
+      <f7-list-item title="免责声明" link="/mzsm/"></f7-list-item>
       <f7-list-item title="常见问题"></f7-list-item>
       <f7-list-item title="关于我们"></f7-list-item>
     </f7-list>

@@ -10,6 +10,7 @@ import Manage from './assets/vue/pages/manage'
 import MyHome from './assets/vue/pages/myHome'
 import Login from './assets/vue/pages/login'
 import Version from './assets/vue/pages/version'
+import mzsm from './assets/vue/pages/mzsm'
 import Person from './assets/vue/pages/person'
 
 export default [
@@ -40,6 +41,10 @@ export default [
   {
     path: '/version/',
     component: Version
+  },
+  {
+    path: '/mzsm/',
+    component: mzsm
   },
   {
     path: '/panel-left/',
