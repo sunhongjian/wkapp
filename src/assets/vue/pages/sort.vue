@@ -48,7 +48,7 @@
                   </div>
                   <div
                     @click="goModeDetail(item.roomId)"
-                    v-if="item.houseRoomInfo && item.houseRoomInfo.modelType == 1"
+                    v-if="item.houseRoomInfo && item.houseRoomInfo.modelName == '自定义模式'"
                     class="icon-settings"
                   ></div>
                 </div>
@@ -281,7 +281,6 @@ export default {
         global.toast("集中户住宅不能变更模式");
         return;
       }
-      console.log(item);
       this.loadingSwitch = true;
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
@@ -317,13 +316,14 @@ export default {
               }`,
               method: "get"
             });
-            self.list.forEach(n => {
+            // 第二次更改时调整部分代码
+            console.log(self.list)
+            self.list[self.showSwitch].roomList.forEach(n => {
               if (n.roomId == item.roomId) {
                 n.houseRoomInfo.modelId = element.modelId;
                 n.houseRoomInfo.modelName = element.modelName;
               }
             });
-            console.log(element);
           }
         });
       });

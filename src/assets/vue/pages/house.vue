@@ -320,7 +320,7 @@ export default {
             appIcon: value
           }
         });
-        this.initData();
+        this.initData(true);
         global.toast(res.data.info);
       } catch (error) {}
     },
