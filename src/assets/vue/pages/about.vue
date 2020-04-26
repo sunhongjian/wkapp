@@ -1,61 +1,18 @@
 <template>
   <f7-page>
-    <f7-navbar large title="About" title-large="About" back-link="Framework7"></f7-navbar>
-    <f7-block-title>Welcome to Framework7</f7-block-title>
-    <f7-block strong>
-      <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working app prototype as soon as possible in case you need to. Framework7 is created by Vladimir Kharlampidi (iDangero.us).</p>
-      <p>The main approach of the Framework7 is to give you an opportunity to create iOS and Android (Material) apps with HTML, CSS and JavaScript easily and clear. Framework7 is full of freedom. It doesn't limit your imagination or offer ways of any solutions somehow. Framework7 gives you freedom!</p>
-      <p>Framework7 is not compatible with all platforms. It is focused only on iOS and Android (Material) to bring the best experience and simplicity.</p>
-      <p>Framework7 is definitely for you if you decide to build iOS and Android hybrid app (PhoneGap) or web app that looks like and feels as great native iOS or Android (Material) apps.</p>
-    </f7-block>
-    <f7-list>
-      <f7-list-item
-        swipeout
-        title="Facebook"
-        after="17:14"
-        subtitle="New messages from John Doe"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      >
-        <f7-swipeout-actions left>
-          <f7-swipeout-button overswipe color="green" @click="$f7router.back()">Reply</f7-swipeout-button>
-          <f7-swipeout-button color="blue" @click="$f7router.back()">Forward</f7-swipeout-button>
-        </f7-swipeout-actions>
-        <f7-swipeout-actions right>
-          <f7-swipeout-button @click="$f7router.back()">More</f7-swipeout-button>
-          <f7-swipeout-button color="orange" @click="$f7router.back()">Mark</f7-swipeout-button>
-          <f7-swipeout-button
-            delete
-            overswipe
-            confirm-text="Are you sure you want to delete this item?"
-          >Delete</f7-swipeout-button>
-        </f7-swipeout-actions>
-      </f7-list-item>
-      <f7-list-item
-        swipeout
-        title="Twitter"
-        after="20:00"
-        subtitle="New messages from John Doe"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      >
-        <f7-swipeout-actions left>
-          <f7-swipeout-button overswipe color="green" @click="$f7router.back()">Reply</f7-swipeout-button>
-          <f7-swipeout-button color="blue" @click="$f7router.back()">Forward</f7-swipeout-button>
-        </f7-swipeout-actions>
-        <f7-swipeout-actions right>
-          <f7-swipeout-button @click="$f7router.back()">More</f7-swipeout-button>
-          <f7-swipeout-button color="orange" @click="$f7router.back()">Mark</f7-swipeout-button>
-          <f7-swipeout-button
-            delete
-            overswipe
-            confirm-text="Are you sure you want to delete this item?"
-          >Delete</f7-swipeout-button>
-        </f7-swipeout-actions>
-      </f7-list-item>
-    </f7-list>
+    <f7-navbar title="关于我们" back-link="返回"></f7-navbar>
+    <div style="padding-top: 50px; line-height: 20px; padding: 20px">
+成诺智家（北京）新能源科技有限公司是一家以研发为核心，集设计、销售、施工为一体的创新型高科技企业。公司坐落于北京经济技术开发区，依托开发区先进的技术、人才、和管理优势，致力于为社会提供高效、环保、节能的新能源管理方案服务。长期以来，成诺智家致力于智能电力控制系统的研发与应用，着力打造成国内电采暖行业领域产品、方案顶级服务商，以用电安全、无需增容为技术核心，面向政府、开发商、材料商、暖通公司、装饰企业以及终端用户，输出包括软件平台、硬件终端和实施运营服务在内的一揽子解决方案。公司从创始之初就秉承“科技智能、科技节能、科技环保”的企业理念，在节能、环保、智能软硬件产品研发与推广方面成效显著。现阶段，公司聚焦电采暖推广过程中的两大瓶颈问题：电力增容和智能化，通过软、硬件结合的智能系统，突破了电采暖推广普及过程中的电力增容瓶颈，提升了电采暖智能化水平。经过多年的积累，成诺智家拥有了无增容发明专利、设计图集、行业标准及大规模成功案例。成诺智家具备了为电采暖行业提供方案设计、图纸绘制、工程施工、系统配套及后期运营一揽子解决方案的能力。成诺智家坚持“美美与共，和合共生”的理念，联合行业各方资源，共同为社会提供优质服务。
+    </div>
   </f7-page>
 </template>
+
 <script>
 export default {
-  components: {}
-};
+
+}
 </script>
+
+<style>
+
+</style>

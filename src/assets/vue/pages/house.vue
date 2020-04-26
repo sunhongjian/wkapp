@@ -405,7 +405,7 @@ export default {
     },
     // 温度调控
     editTemp(item, val, par) {
-      if(item.modelId != "") {
+      if(item.modelType != "0") {
         global.toast("切换到自由模式再调整温度");
         return;
       }

@@ -11,6 +11,7 @@ import MyHome from './assets/vue/pages/myHome'
 import Login from './assets/vue/pages/login'
 import Version from './assets/vue/pages/version'
 import mzsm from './assets/vue/pages/mzsm'
+import question from './assets/vue/pages/question'
 import Person from './assets/vue/pages/person'
 
 export default [
@@ -45,6 +46,10 @@ export default [
   {
     path: '/mzsm/',
     component: mzsm
+  },
+  {
+    path: '/question/',
+    component: question
   },
   {
     path: '/panel-left/',

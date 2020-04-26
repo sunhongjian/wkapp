@@ -269,11 +269,16 @@ export default {
       if (!child) {
         return
       }
-      if (child.modelType == 0) {
+            if (child.modelType == 0) {
         return "自由模式";
       } else if (child.modelType == 1) {
         return child.modelName;
       }
+      // if (!child.modelName) {
+      //   return "自由模式";
+      // } else{
+      //   return child.modelName;
+      // }
     },
     // 变更模式
     async changeMode(item) {
@@ -307,7 +312,11 @@ export default {
                 method: "get"
               });
               if (resMode.data.code == 200) {
-                item.modelType = item.modelType == "0" ? "1" : "0";
+                       self.list[self.showSwitch].roomList.forEach(n => {
+              if (n.roomId == item.roomId) {
+                n.houseRoomInfo.modelType = item.modelType == "0" ? "1" : "0";
+              }
+            });
               }
             }
             let res = await self.$axios({

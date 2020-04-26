@@ -4,11 +4,9 @@
     <f7-block-title>关于</f7-block-title>
     <f7-list>
       <f7-list-item title="版本信息" link="/version/"></f7-list-item>
-      <f7-list-item title="检查更新"></f7-list-item>
-      <f7-list-item title="意见反馈"></f7-list-item>
       <f7-list-item title="免责声明" link="/mzsm/"></f7-list-item>
-      <f7-list-item title="常见问题"></f7-list-item>
-      <f7-list-item title="关于我们"></f7-list-item>
+      <f7-list-item title="常见问题" link="/question/"></f7-list-item>
+      <f7-list-item title="关于我们" link="/about/"></f7-list-item>
     </f7-list>
     <f7-block-title>账户</f7-block-title>
     <f7-list>
