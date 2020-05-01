@@ -136,7 +136,7 @@
       <div class="swiper-pagination"></div>
     </div>
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
-      <manage ref="manage" @closeHandle="closeHandle"></manage>
+      <manage ref="manage" @closeHandle="closeHandle" @refresh="refreshData"></manage>
     </f7-popup>
     <!-- 排序 -->
     <f7-popup class="demo-popup" :opened="popupSort" @popup:closed="popupSort = false">
@@ -246,9 +246,13 @@ export default {
     },
     closeHandle(idx) {
       this.popupOpened = false;
-      var mySwiper = document.querySelector(".swiper-container").swiper;
-      mySwiper.slideTo(idx, 0, false);
-      // this.initData();
+      this.list.forEach((n,index) => {
+        if(n.houseControlInfo.houseMgtId == idx) {
+          var mySwiper = document.querySelector(".swiper-container").swiper;
+          mySwiper.slideTo(index, 0, false);
+        }
+      });
+
     },
     closeHandleSort() {
       this.popupSort = false;
@@ -324,7 +328,7 @@ export default {
         global.toast(res.data.info);
       } catch (error) {}
     },
-    // 失去焦点
+    // 编辑房间名称失去焦点触发事件
     async blurRemark(value) {
       try {
         let res = await this.$axios({
@@ -335,7 +339,7 @@ export default {
             remark: value.remark
           }
         });
-        this.initData();
+        this.initData(true);
         global.toast(res.data.info);
       } catch (error) {}
     },
@@ -471,6 +475,13 @@ export default {
         item.switchStatus = item.switchStatus == "Y" ? "N" : "Y";
       }
     },
+    // 刷新数据
+    refreshData() {
+        var mySwiper = document.querySelector(".swiper-container").swiper;
+        mySwiper.destroy();
+        this.firstInit = true
+        this.initData()
+    },
     async initData(spec) {
       // if (document.querySelector(".swiper-container")) {
       //   var mySwiper = document.querySelector(".swiper-container").swiper;
@@ -492,7 +503,8 @@ export default {
       this.loadingSwitch = false;
       if (res.data.code == 200) {
         // 取前5个
-        this.list = res.data.data.splice(0,5);
+        // this.list = res.data.data.splice(0,5);
+        this.list = res.data.data
         this.list.forEach(n => {
           n.houseRoomInfo.forEach(c => {
             c.showEditRemark = false;
