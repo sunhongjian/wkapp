@@ -4,9 +4,9 @@
       <f7-block class="login-box">
         <div>
           <img src="../../images/icon.png" alt />
-          <p>成诺智家</p>
         </div>
       </f7-block>
+       <p style="text-align: center; font-size: 16px">成诺智家</p>
 
       <f7-list no-hairlines-md style="margin: 0 auto; padding: 0 20px">
         <f7-list-input
@@ -160,7 +160,8 @@ export default {
   margin: 0;
 }
 .login-box {
-  height: 200px;
+  margin-top: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
