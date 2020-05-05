@@ -291,6 +291,7 @@ export default {
               for(let key in child) {
                 child[key] = res.data.data[key]
               }
+              n.houseControlInfo.lastUpdateTime = res.data.data.lastUpdateTime
             }
           })
         })
@@ -376,9 +377,9 @@ export default {
       });
     },
     modelType(child) {
-      if (child.modelType == 0) {
+      if (child.modelType == 1) {
         return "自由模式";
-      } else if (child.modelType == 1) {
+      } else if (child.modelType == 0) {
         return "编程模式";
       }
     },
@@ -409,7 +410,7 @@ export default {
     },
     // 温度调控
     editTemp(item, val, par) {
-      if(item.modelType != "0") {
+      if(item.modelType != "1") {
         global.toast("切换到自由模式再调整温度");
         return;
       }

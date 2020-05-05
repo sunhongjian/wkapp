@@ -1,15 +1,22 @@
 <template>
   <f7-page>
+    <loading :show="loadingSwitch"></loading>
     <f7-navbar title="模式和排序">
       <f7-nav-right>
         <f7-link @click="closeHandle">关闭</f7-link>
       </f7-nav-right>
     </f7-navbar>
     <f7-toolbar tabbar bottom>
-    <f7-link :class="{ active: index == showSwitch }"
-    v-for="(item, index) in list" :key="index" :tab-link="`#tab-${index}`" @click="switchTab(index)">{{item.name}}</f7-link>
-  </f7-toolbar>
-  <f7-tabs>
+      <f7-link
+        :class="{ active: index == showSwitch }"
+        v-for="(item, index) in list"
+        :key="index"
+        :tab-link="`#tab-${index}`"
+        @click="switchTab(index)"
+        >{{ item.name }}</f7-link
+      >
+    </f7-toolbar>
+    <f7-tabs>
       <div
         v-for="(room, index) in list"
         :key="index"
@@ -17,45 +24,48 @@
         class="page-content"
         v-show="index == showSwitch"
       >
-      <f7-block>
-
-            <h5 style="padding-left: 10px">提示: 升温顺序(可以拖动进行调整)</h5>
-            <draggable
-              :list="room.roomList"
-              :disabled="!enabled"
-              handle=".handle"
-              class="list-group"
-              ghost-class="ghost"
-              @start="dragging = true"
-              @change="checkMove()"
+        <f7-block>
+          <h5 style="padding-left: 10px">提示: 升温顺序(可以拖动进行调整)</h5>
+          <draggable
+            :list="room.roomList"
+            :disabled="!enabled"
+            handle=".handle"
+            class="list-group"
+            ghost-class="ghost"
+            @start="dragging = true"
+            @change="checkMove()"
+          >
+            <div
+              class="list-group-item"
+              v-for="item in room.roomList"
+              :key="item.roomId"
             >
-              <div
-                class="list-group-item"
-                v-for="item in room.roomList"
-                :key="item.roomId"
-              >
-                <i
-                  class="fa fa-arrows-alt handle"
-                  style="color: teal; font-size: 16px; margin-right: 10px"
-                ></i>
-                {{ item.remark }}
-                <div style="float: right">
-                  <div
-                    style="color: teal; height: 100%"
-                    @click.stop="changeMode(item.houseRoomInfo)"
-                  >
-                    {{ modelTypeEnum(item.houseRoomInfo) }}
-                  </div>
-                  <div
-                    @click="goModeDetail(item.roomId)"
-                    v-if="item.houseRoomInfo && item.houseRoomInfo.modelName == '自定义模式'"
-                    class="icon-settings"
-                  ></div>
+              <i
+                class="fa fa-arrows-alt handle"
+                style="color: teal; font-size: 16px; margin-right: 10px"
+              ></i>
+              {{ item.remark }}
+              <div style="float: right">
+                <div
+                  style="color: teal; height: 100%"
+                  @click.stop="changeMode(item.houseRoomInfo)"
+                >
+                  {{ modelTypeEnum(item.houseRoomInfo) }}
                 </div>
+                <div
+                  @click="goModeDetail(item.roomId)"
+                  v-if="
+                    item.houseRoomInfo &&
+                      item.houseRoomInfo.modelType == 0 &&
+                      item.houseRoomInfo.modelName == '自定义模式'
+                  "
+                  class="icon-settings"
+                ></div>
               </div>
-            </draggable> 
-      </f7-block>
-    </div>
+            </div>
+          </draggable>
+        </f7-block>
+      </div>
       <!-- <f7-tab
         v-for="(room, index) in list"
         :key="index"
@@ -104,7 +114,7 @@
           </div>
         </f7-block>
     </f7-tab> -->
-  </f7-tabs>
+    </f7-tabs>
     <f7-popup
       class="demo-popup"
       :opened="popupRoom"
@@ -222,6 +232,7 @@
 </template>
 
 <script>
+import loading from "../components/loading";
 import draggable from "vuedraggable";
 import global from "../../../global";
 let id = 1;
@@ -231,10 +242,12 @@ export default {
   order: 0,
   houseControlInfo: {},
   components: {
-    draggable
+    draggable,
+    loading
   },
   data() {
     return {
+      loadingSwitch: false,
       showSwitch: 0,
       enabled: true,
       popupRoom: false,
@@ -259,19 +272,19 @@ export default {
   },
   methods: {
     switchTab(value) {
-      this.showSwitch = value
+      this.showSwitch = value;
     },
     closeHandle() {
       this.$emit("closeHandle");
     },
     modelTypeEnum(child) {
-      console.log(3333,child);
+      console.log(3333, child);
       if (!child) {
-        return
+        return;
       }
-            if (child.modelType == 0) {
+      if (child.modelType == 1) {
         return "自由模式";
-      } else if (child.modelType == 1) {
+      } else if (child.modelType == 0) {
         return child.modelName;
       }
       // if (!child.modelName) {
@@ -286,12 +299,10 @@ export default {
         global.toast("集中户住宅不能变更模式");
         return;
       }
-      this.loadingSwitch = true;
       let res = await this.$axios({
         url: `app/heating/residentApp/getRoomModelList/${item.roomId}`,
         method: "get"
       });
-      this.loadingSwitch = false;
       let buttons = [];
       res.data.data.forEach(element => {
         const self = this;
@@ -306,17 +317,27 @@ export default {
         buttons.push({
           text,
           async onClick(val) {
-            if (item.modelType == 0) {
+            self.loadingSwitch = true;
+            if (item.modelType == 1) {
               let resMode = await self.$axios({
-                url: `app/heating/residentApp/changeRoomModel/${item.roomId}`,
+                url: `app/heating/residentApp/changeRoomModel/${item.roomId}/0`,
                 method: "get"
               });
+              self.loadingSwitch = false;
               if (resMode.data.code == 200) {
-                       self.list[self.showSwitch].roomList.forEach(n => {
-              if (n.roomId == item.roomId) {
-                n.houseRoomInfo.modelType = item.modelType == "0" ? "1" : "0";
-              }
-            });
+                if (resMode.data.data == "1") {
+                  global.toast("切换失败");
+                  return;
+                }
+                self.list[self.showSwitch].roomList.forEach(n => {
+                  if (n.roomId == item.roomId) {
+                    n.houseRoomInfo.modelType =
+                      item.modelType == "0" ? "1" : "0";
+                  }
+                });
+              } else {
+                global.toast("切换失败");
+                return;
               }
             }
             let res = await self.$axios({
@@ -326,7 +347,7 @@ export default {
               method: "get"
             });
             // 第二次更改时调整部分代码
-            console.log(self.list)
+            console.log(self.list);
             self.list[self.showSwitch].roomList.forEach(n => {
               if (n.roomId == item.roomId) {
                 n.houseRoomInfo.modelId = element.modelId;
@@ -344,14 +365,20 @@ export default {
             {
               text: "自由模式",
               async onClick(val) {
-                if (item.modelType == 1) {
+                self.loadingSwitch = true;
+                if (item.modelType == 0) {
                   let resMode = await self.$axios({
                     url: `app/heating/residentApp/changeRoomModel/${
                       item.roomId
-                    }`,
+                    }/1`,
                     method: "get"
                   });
+                  self.loadingSwitch = false;
                   if (resMode.data.code == 200) {
+                    if (resMode.data.data == "0") {
+                      global.toast("切换失败");
+                      return;
+                    }
                     item.modelType = item.modelType == "0" ? "1" : "0";
                   }
                 }
