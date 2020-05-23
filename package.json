@@ -55,6 +55,7 @@
     "cordova-ios": "^5.1.1",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-whitelist": "1",
+    "cordova-plugin-wkwebview-engine": "^1.2.1",
     "fastclick": "^1.0.6",
     "framework7": "^4.4.0",
     "framework7-icons": "^2.3.1",
@@ -73,7 +74,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-wkwebview-engine": {}
     },
     "platforms": [
       "browser",

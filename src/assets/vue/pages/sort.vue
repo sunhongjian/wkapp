@@ -285,7 +285,7 @@ export default {
       if (child.modelType == 1) {
         return "自由模式";
       } else if (child.modelType == 0) {
-        return child.modelName;
+        return child.modelName ? child.modelName : '请选择模式';
       }
       // if (!child.modelName) {
       //   return "自由模式";
@@ -346,6 +346,7 @@ export default {
               }`,
               method: "get"
             });
+            self.loadingSwitch = false;
             // 第二次更改时调整部分代码
             console.log(self.list);
             self.list[self.showSwitch].roomList.forEach(n => {

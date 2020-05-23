@@ -16,6 +16,9 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.wulianzhijia"
+    },
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "com.wulianzhijia"
     }
   },
   "dependent_plugins": {}

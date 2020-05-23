@@ -34,26 +34,40 @@
                   <i @click="goDetail()" class="f7-icons">list</i>
                 </div>
               </div>
-              <div class="title">{{item.houseControlInfo.houseName}}</div>
+              <div class="title">{{ item.houseControlInfo.houseName }}</div>
               <!-- <div class="sub-title">{{item.houseControlInfo.address}}</div> -->
-              <div class="sub-time-title">更新时间: {{item.houseControlInfo.lastUpdateTime}}</div>
+              <div class="sub-time-title">
+                更新时间: {{ item.houseControlInfo.lastUpdateTime }}
+              </div>
               <!-- <div @click="initData(true)" class="house-refresh"></div> -->
-              <f7-button class="moshipaixu" @click="modeAndSort(item)" fill round>模式和排序</f7-button>
+              <f7-button
+                class="moshipaixu"
+                @click="modeAndSort(item)"
+                fill
+                round
+                >模式和排序</f7-button
+              >
             </div>
             <div style="padding: 10px" class="group">
               <div
                 class="item"
                 v-for="child in item.houseRoomInfo"
-                :class="{'gray-theme': child.switchStatus == 'N'}"
+                :class="{ 'gray-theme': child.switchStatus == 'N' }"
               >
                 <div class="item-inner-content">
                   <div style="text-align: center; margin-bottom: 5px;">
                     <div style="display: flex; height: 32px; overflow:hidden">
-                      <span style="font-size: 15px; color:teal; flex: 1" :style="{fontSize: child.remark.length> 2 ? '12px' : '15px'}">
+                      <span
+                        style="font-size: 15px; color:teal; flex: 1"
+                        :style="{
+                          fontSize: child.remark.length > 2 ? '12px' : '15px'
+                        }"
+                      >
                         <span
                           v-if="!child.showEditRemark"
-                          @click="editRemark(child,item.houseRoomInfo)"
-                        >{{child.remark}}</span>
+                          @click="editRemark(child, item.houseRoomInfo)"
+                          >{{ child.remark }}</span
+                        >
                         <input
                           style="width: 50px"
                           v-model="child.remark"
@@ -62,22 +76,32 @@
                           @blur="blurRemark(child)"
                         />
                       </span>
-                      <span v-if="!child.appIcon" class="icon-home" @click="showIconChose(child)"></span>
-                      <span v-if="child.appIcon" class="icon-chosen" @click="showIconChose(child)">
+                      <span
+                        v-if="!child.appIcon"
+                        class="icon-home"
+                        @click="showIconChose(child)"
+                      ></span>
+                      <span
+                        v-if="child.appIcon"
+                        class="icon-chosen"
+                        @click="showIconChose(child)"
+                      >
                         <img :src="getImgUrl(child.appIcon)" alt />
                       </span>
-                      <span style="font-size: 18px; color: teal; flex: 1">{{child.setTemp}}°</span>
+                      <span style="font-size: 18px; color: teal; flex: 1"
+                        >{{ child.setTemp }}°</span
+                      >
                     </div>
                   </div>
                   <f7-button
-                      raised
-                      round
-                      small
-                      class="icon-round-room room-refresh"
-                      @click="refreshRoom(child)"
-                    >
-                    </f7-button>
-                  <div class="realTemp">{{child.realTemp}}°</div>
+                    raised
+                    round
+                    small
+                    class="icon-round-room room-refresh"
+                    @click="refreshRoom(child)"
+                  >
+                  </f7-button>
+                  <div class="realTemp">{{ child.realTemp }}°</div>
                   <div class="display-flex" style="margin-top: 5px">
                     <!-- <div style="color: teal" @click="changeMode(child, item);">{{modelType(child)}}</div> -->
                     <!-- <div
@@ -94,7 +118,7 @@
                         small
                         class="icon-round"
                         style="float: left"
-                        @click="editTemp(child,'-1', item)"
+                        @click="editTemp(child, '-1', item)"
                       >
                         <div class="icon-add"></div>
                       </f7-button>
@@ -121,7 +145,9 @@
                       >
                         <div
                           class="icon-switch"
-                          :class="{'icon-switch-open' : child.switchStatus == 'Y'}"
+                          :class="{
+                            'icon-switch-open': child.switchStatus == 'Y'
+                          }"
                         ></div>
                       </f7-button>
                     </div>
@@ -135,15 +161,31 @@
       <!-- If we need pagination -->
       <div class="swiper-pagination"></div>
     </div>
-    <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
-      <manage ref="manage" @closeHandle="closeHandle" @refresh="refreshData"></manage>
+    <f7-popup
+      class="demo-popup"
+      :opened="popupOpened"
+      @popup:closed="popupOpened = false"
+    >
+      <manage
+        ref="manage"
+        @closeHandle="closeHandle"
+        @refresh="refreshData"
+      ></manage>
     </f7-popup>
     <!-- 排序 -->
-    <f7-popup class="demo-popup" :opened="popupSort" @popup:closed="popupSort = false">
+    <f7-popup
+      class="demo-popup"
+      :opened="popupSort"
+      @popup:closed="popupSort = false"
+    >
       <sort ref="sort" @closeHandle="closeHandleSort"></sort>
     </f7-popup>
     <!-- 选择图标 -->
-    <f7-actions :grid="true" :opened="actionGridOpened" @actions:closed="actionGridOpened = false">
+    <f7-actions
+      :grid="true"
+      :opened="actionGridOpened"
+      @actions:closed="actionGridOpened = false"
+    >
       <f7-actions-group>
         <f7-actions-button @click="changeIcon(1)">
           <img slot="media" src="../../../assets/images/1.png" width="48" />
@@ -225,6 +267,13 @@ export default {
   created() {
     window.x = this;
     this.initData();
+      var self = this;
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        document.addEventListener("resume", self.onResume, false);
+          // 现在可以安全的使用设备API
+      }
   },
   computed: {
     ...mapState({
@@ -240,19 +289,25 @@ export default {
   },
   methods: {
     ...mapMutations(["LOGIN_SUCCESS"]),
+    onResume() {
+      // Handle the resume lifecycle event.
+      // SetTimeout required for iOS.
+      setTimeout(()=> {
+        this.initData(true)
+      }, 0);
+    },
     goDetail() {
       this.$refs.manage.initData();
       this.popupOpened = true;
     },
     closeHandle(idx) {
       this.popupOpened = false;
-      this.list.forEach((n,index) => {
-        if(n.houseControlInfo.houseMgtId == idx) {
+      this.list.forEach((n, index) => {
+        if (n.houseControlInfo.houseMgtId == idx) {
           var mySwiper = document.querySelector(".swiper-container").swiper;
           mySwiper.slideTo(index, 0, false);
         }
       });
-
     },
     closeHandleSort() {
       this.popupSort = false;
@@ -269,39 +324,37 @@ export default {
     },
     // 刷新房间
     refreshRoom(item) {
-      if(this.canActionRefresh) {
-        this.canActionRefresh = false
-         setTimeout(()=> {
-           this.canActionRefresh = true
-             this.refreshRoomTrue(item)  
-         }, 2000)
+      if (this.canActionRefresh) {
+        this.canActionRefresh = false;
+        setTimeout(() => {
+          this.canActionRefresh = true;
+          this.refreshRoomTrue(item);
+        }, 2000);
       }
     },
     async refreshRoomTrue(item) {
-        // 增加延迟   
-        let res = await this.$axios({
-          url: `app/heating/residentApp/getLastValue/${item.roomId}`,
-          method: "get",
-        });
-        if(res.data.code == '200') {
-        let list = this.list
-        list.forEach((n,idx) => {
+      // 增加延迟
+      let res = await this.$axios({
+        url: `app/heating/residentApp/getLastValue/${item.roomId}`,
+        method: "get"
+      });
+      if (res.data.code == "200") {
+        let list = this.list;
+        list.forEach((n, idx) => {
           n.houseRoomInfo.forEach((child, cidx) => {
-            if(child.roomId == item.roomId) {
-              for(let key in child) {
-                child[key] = res.data.data[key]
+            if (child.roomId == item.roomId) {
+              for (let key in child) {
+                child[key] = res.data.data[key];
               }
-              n.houseControlInfo.lastUpdateTime = res.data.data.lastUpdateTime
+              n.houseControlInfo.lastUpdateTime = res.data.data.lastUpdateTime;
             }
-          })
-        })
-        this.list = [...list]
-        global.toast('房间数据刷新成功');
-        } else {
-          global.toast('刷新异常');
-        }
-
-
+          });
+        });
+        this.list = [...list];
+        global.toast("房间数据刷新成功");
+      } else {
+        global.toast("刷新异常");
+      }
     },
     editRemark(item, data) {
       // 关闭其他的输入框
@@ -385,10 +438,11 @@ export default {
     },
     // 模式和排序
     async modeAndSort(item) {
-      
       this.loadingSwitch = true;
       let res = await this.$axios({
-        url: `app/heating/residentApp/getRoomHeatOrder/${item.houseControlInfo.houseMgtId}/${window.localStorage.getItem("appUserId")}`,
+        url: `app/heating/residentApp/getRoomHeatOrder/${
+          item.houseControlInfo.houseMgtId
+        }/${window.localStorage.getItem("appUserId")}`,
         method: "get"
       });
       this.loadingSwitch = false;
@@ -399,10 +453,10 @@ export default {
             if (n.roomId == room.roomId) {
               room.houseRoomInfo = n;
             }
-          })
+          });
         });
       });
-      console.log('数据', temp)
+      console.log("数据", temp);
       this.$refs.sort.showSwitch = 0;
       this.$refs.sort.list = temp;
       this.$refs.sort.houseControlInfo = item.houseControlInfo;
@@ -410,7 +464,7 @@ export default {
     },
     // 温度调控
     editTemp(item, val, par) {
-      if(item.modelType != "1") {
+      if (item.modelType != "1") {
         global.toast("切换到自由模式再调整温度");
         return;
       }
@@ -427,31 +481,31 @@ export default {
         global.toast("温度不能超过35度");
         return;
       }
-      if (item.setTemp + Number(val) < 5&& Number(val) < 0) {
+      if (item.setTemp + Number(val) < 5 && Number(val) < 0) {
         global.toast("温度不能低于5度");
         return;
       }
       // 三秒发一次真实请求
       item.setTemp = item.setTemp + Number(val);
-      if(this.canAction) {
-        item.tempVal = val
-        this.canAction = false
-         setTimeout(()=> {
-           this.canAction = true
-           if(item.tempVal !== 0) {
-             this.editTempTrue(item, item.tempVal, par)
-           }         
-         }, 2000)
+      if (this.canAction) {
+        item.tempVal = val;
+        this.canAction = false;
+        setTimeout(() => {
+          this.canAction = true;
+          if (item.tempVal !== 0) {
+            this.editTempTrue(item, item.tempVal, par);
+          }
+        }, 2000);
       } else {
-        item.tempVal = Number(item.tempVal) + Number(val)
-        return false
+        item.tempVal = Number(item.tempVal) + Number(val);
+        return false;
       }
     },
     async editTempTrue(item, val, par) {
       let res = await this.$axios({
-        url: `app/heating/residentApp/setTempSwitch/${
-          item.roomId
-        }/${item.setTemp}/${item.switchStatus}`,
+        url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${
+          item.setTemp
+        }/${item.switchStatus}`,
         method: "get"
       });
       if (res.data.code == 200) {
@@ -467,7 +521,9 @@ export default {
       }
       let status = item.switchStatus == "Y" ? "N" : "Y";
       let res = await this.$axios({
-        url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${item.setTemp}/${status}`,
+        url: `app/heating/residentApp/setTempSwitch/${item.roomId}/${
+          item.setTemp
+        }/${status}`,
         method: "get"
       });
       if (res.data.code == 200) {
@@ -478,10 +534,10 @@ export default {
     },
     // 刷新数据
     refreshData() {
-        var mySwiper = document.querySelector(".swiper-container").swiper;
-        mySwiper.destroy();
-        this.firstInit = true
-        this.initData()
+      var mySwiper = document.querySelector(".swiper-container").swiper;
+      mySwiper.destroy();
+      this.firstInit = true;
+      this.initData();
     },
     async initData(spec) {
       // if (document.querySelector(".swiper-container")) {
@@ -492,10 +548,10 @@ export default {
       this.loadingSwitch = true;
       let appUserId = window.localStorage.getItem("appUserId");
       // 刷新获取houseMgtId
-      let url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
-      if(spec) {
+      let url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`;
+      if (spec) {
         // let houseMgtId = this.list[this.activeIndex].houseControlInfo.houseMgtId
-        url= `app/heating/residentApp/getHouseAndRoomList/${appUserId}`
+        url = `app/heating/residentApp/getHouseAndRoomList/${appUserId}`;
       }
       let res = await this.$axios({
         url,
@@ -505,7 +561,7 @@ export default {
       if (res.data.code == 200) {
         // 取前5个
         // this.list = res.data.data.splice(0,5);
-        this.list = res.data.data
+        this.list = res.data.data;
         this.list.forEach(n => {
           n.houseRoomInfo.forEach(c => {
             c.showEditRemark = false;
@@ -527,7 +583,7 @@ export default {
         //     n.modelName = name;
         //   });
         // });
-        let self = this
+        let self = this;
         this.$nextTick(function() {
           if (this.list.length == 0 || spec) {
             return;
@@ -537,10 +593,10 @@ export default {
             mySwiper.destroy();
           } else {
             var swiper = new Swiper(".swiper-container", {
-              on:{
-                slideChange: function(){
-                  self.activeIndex = swiper.activeIndex
-                },
+              on: {
+                slideChange: function() {
+                  self.activeIndex = swiper.activeIndex;
+                }
               },
               renderBullet: function(index, className) {
                 return (
@@ -638,7 +694,7 @@ export default {
   background-size: 20px auto;
   background-position: 6px;
   padding: 0 !important;
-  background-image: url("../../images/refresh.png"); 
+  background-image: url("../../images/refresh.png");
 }
 .icon-add {
   width: 32px;
