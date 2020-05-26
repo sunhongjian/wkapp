@@ -511,6 +511,15 @@ export default {
       if (res.data.code == 200) {
         // item.setTemp = item.setTemp + Number(item.tempVal);
         item.tempVal = 0;
+                    let list = this.list;
+        list.forEach((n, idx) => {
+          n.houseRoomInfo.forEach((child, cidx) => {
+            if (child.roomId == item.roomId) {
+              n.houseControlInfo.lastUpdateTime = res.data.data;
+            }
+          });
+        });
+        this.list = [...list];
         global.toast("温度设置成功");
       }
     },
