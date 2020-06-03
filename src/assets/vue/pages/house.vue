@@ -430,9 +430,9 @@ export default {
       });
     },
     modelType(child) {
-      if (child.modelType == 1) {
+      if (child.modelType == 0) {
         return "自由模式";
-      } else if (child.modelType == 0) {
+      } else if (child.modelType == 1) {
         return "编程模式";
       }
     },
@@ -464,7 +464,7 @@ export default {
     },
     // 温度调控
     editTemp(item, val, par) {
-      if (item.modelType != "1") {
+      if (item.modelType != "0") {
         global.toast("切换到自由模式再调整温度");
         return;
       }

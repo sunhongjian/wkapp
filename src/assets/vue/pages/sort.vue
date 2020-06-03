@@ -56,7 +56,7 @@
                   @click="goModeDetail(item.roomId)"
                   v-if="
                     item.houseRoomInfo &&
-                      item.houseRoomInfo.modelType == 0 &&
+                      item.houseRoomInfo.modelType == 1 &&
                       item.houseRoomInfo.modelName == '自定义模式'
                   "
                   class="icon-settings"
@@ -282,9 +282,9 @@ export default {
       if (!child) {
         return;
       }
-      if (child.modelType == 1) {
+      if (child.modelType == 0) {
         return "自由模式";
-      } else if (child.modelType == 0) {
+      } else if (child.modelType == 1) {
         return child.modelName ? child.modelName : '请选择模式';
       }
       // if (!child.modelName) {
@@ -307,7 +307,7 @@ export default {
       res.data.data.forEach(element => {
         const self = this;
         let text = "";
-        if (element.isPresent == 0 && item.modelType == 1) {
+        if (element.isPresent == 0 && item.modelType == 0) {
           text =
             '<i style="color: teal" class="f7-icons">check</i>' +
             element.modelName;
@@ -318,9 +318,9 @@ export default {
           text,
           async onClick(val) {
             self.loadingSwitch = true;
-            if (item.modelType == 1) {
+            if (item.modelType == 0) {
               let resMode = await self.$axios({
-                url: `app/heating/residentApp/changeRoomModel/${item.roomId}/0`,
+                url: `app/heating/residentApp/changeRoomModel/${item.roomId}/1`,
                 method: "get"
               });
               self.loadingSwitch = false;
@@ -367,11 +367,11 @@ export default {
               text: "自由模式",
               async onClick(val) {
                 self.loadingSwitch = true;
-                if (item.modelType == 0) {
+                if (item.modelType == 1) {
                   let resMode = await self.$axios({
                     url: `app/heating/residentApp/changeRoomModel/${
                       item.roomId
-                    }/1`,
+                    }/0`,
                     method: "get"
                   });
                   self.loadingSwitch = false;
